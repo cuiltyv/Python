@@ -127,27 +127,27 @@ class Tokenizer:
       
 
 dictio_regex = { 'const_int' : r"^[0-9]+\b",
-				'identifier' : r"^[a-zA-Z]\w*\b",
+				'identifier' : r"^[a-zA-Z_]\w*\b",
 				'=' : r"^=",
         '==' : r"^==",
         ';' : r"^;",
         'operator' : r"^[-+*/]",
-        'comma' : r"^,",
+        ',' : r"^,",
         '(' : r"^\(",
         ')' : r"^\)",
         '[' : r"^\[",
         ']' : r"^\]",
-        '{' : r"^{",
+        '{' : r"^\{",
         '}' : r"^\}",
         '>' : r"^>",
         '<' : r"^<",
         '!=' : r"^!=",
-        '>' : r"^>",
         '<=' : r"^<=",
         '>=' : r"^>=",
         'comment' : r"^#.*",
         ':' : r"^:",
         'const_float' : r"^[0-9]+\.[0-9]+",
+        'string' : r"^\"[^\"]*\"", 
       }
 
 
@@ -156,10 +156,11 @@ keyword_list = ["print", "main", "program", "var", "int", "float", "do", "while"
 
 input_program = """  == a = 14;
   var_b = < 4;
-
+  \{
   program(4)
     printedVal = a +var_b;
   print(printedVal) ;
+  
 """
 
 
