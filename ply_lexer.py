@@ -110,10 +110,23 @@ data =  """
         [] {}
   """
 
-lexer.input(data)
+dataPerLine = data.splitlines()
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+for indx, line in enumerate(dataPerLine):
+    
+    line = line.strip()
+
+    lexer.input(line)
+
+    print(f"Linea {indx}: {line if line else 'Linea Vacia'}")
+
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        # print(tok)
+        print(f"{tok.type:<15} value: {tok.value:<8} lexpos: {tok.lexpos}")
+   
+   #LexToken({self.type},{self.value!r},{self.lexpos})
+        
+    print()
