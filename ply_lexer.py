@@ -127,6 +127,6 @@ for indx, line in enumerate(dataPerLine):
         # print(tok)
         print(f"{tok.type:<15} value: {tok.value:<8} lexpos: {tok.lexpos}")
    
-   #LexToken({self.type},{self.value!r},{self.lexpos})
+   #LexToken({self.type},{self.value!r},{self.lineno},{self.lexpos}) <- Asi se asigna el valor al tok = lexer.token()
         
     print()
