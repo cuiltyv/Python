@@ -37,29 +37,32 @@ def addError(errors, expected, token, index):
 # F ->  ( E ) | const_int
 def factor(tokens, errors):
   # Obten el token actual
-  # token, content = tokens.current()  # <------ el tipo de token, y el valor  ej. 'const_int', 14
+  token, content = tokens.current()  # <------ el tipo de token, y el valor  ej. 'const_int', 14
 
-
+  if token == "del_par_open":
   # Si es un  '('
 
       # Avanza al siguiente token
-
+    token, content = tokens.avanza()
       # Llama a expr
-
+    expr(tokens, errors)
       # Cuando expr termine, actualiza el token actual
-
+    token, content = tokens.current()
       # Si el token actual es ahora un ')'....
-
+    if token == "del_par_close":
         # Avanza al siguiente
-
+      token, content = tokens.avanza()
       # Si no, guarda el error
-
+    else:
+      addError(errors, ")", content, tokens.pos)
   # O si es un 'const_int'...
-
+  elif token == "const_int":
+    token, content = tokens.avanza()
     # Avanza al siguiente token
-
-  # Si no es ninguna de las anteriores...
   else:
+    addError(errors, "( o const_int" , content, tokens.pos)
+  # Si no es ninguna de las anteriores...
+
     # guarda el error usando addError
 
 
@@ -67,16 +70,16 @@ def factor(tokens, errors):
 # T' -> * F T' | epsilon
 def termino_prime(tokens, errors):
   # Obten el token actual
-
+  token, content = tokens.current()
 
   # Si el token actual es un '*'
-
+  if token == "op_mul":
     # Avanza al siguiente token
-
+    token, content = tokens.avanza()
     # Llama a factor
-
+    factor(tokens, errors)
     # Llama a termino_prime
-
+    termino_prime(tokens, errors)
   #Se va por epsilon
 
 
@@ -86,6 +89,7 @@ def termino(tokens, errors):
   # Llama a factor
   factor(tokens, errors)
   # Luego llama a termino_prime
+  termino_prime(tokens, errors)
 
 
 
@@ -94,14 +98,15 @@ def termino(tokens, errors):
 def expr_prime(tokens, errors):
   # Obten el token actual
 
-
+  token, content = tokens.current()
   # Si el token actual es un '+'
-
+  if token == "op_suma":
     # Avanza al siguiente token
-
+    token, content = tokens.avanza()
     # Llama a termino
-
+    termino(tokens, errors)
     # Luego llama a expr_prime
+    expr_prime(tokens, errors)
 
   # Si no, nada... se asume que es <vacio>
 
