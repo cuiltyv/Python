@@ -147,7 +147,7 @@ dictio_regex = { 'const_int' : r"^[0-9]+\b",
         'comment' : r"^#.*",
         ':' : r"^:",
         'const_float' : r"^[0-9]+\.[0-9]+",
-        'string' : r"^\"[^\"]*\"", 
+        'string' : r"^\"[^\"]*\"", # [^\"]* es un match de cualquier caracter que no sea una comilla
       }
 
 

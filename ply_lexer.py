@@ -103,7 +103,7 @@ data =  """
 
       if a = 27;
       otra_var = 12;
-      "Hola Mundo!";
+      print("Hola Mundo!");
         # Esto es un comentario
         var = 3.14;
         var2 = (var + 2) * 3.14;
@@ -112,8 +112,11 @@ data =  """
 
 lexer.input(data)
 
+
 while True:
     tok = lexer.token()
     if not tok:
         break
     print(tok)
+
+
