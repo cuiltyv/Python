@@ -4,5 +4,5 @@
   program(4)
     printedVal = a +var_b;
   print(printedVal) ;
-  "aefiubaeiu_ea-"
-        y = (b+a);
+  "aefiubaeiu_ea-".
+        y = (b+a); :

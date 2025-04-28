@@ -68,7 +68,12 @@ def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'IDENTIFIER')   # Check for reserved words
     if(t.type == 'IDENTIFIER'):
-        simbolos[t.value].append((t.type, indx, t.lexpos))
+    #     simbolos[t.value].append((t.type, indx, t.lexpos))
+        if(t.value in simbolos):
+            simbolos[t.value].append((t.type, indx, t.lexpos))
+        else:
+            simbolos[t.value] = [(t.type, indx, t.lexpos)]
+        
     return t
 
 def t_CONST_FLOAT (t):
@@ -100,33 +105,36 @@ def t_error(t):
     errors.append((t.value[0], t.lexpos, indx))
     t.lexer.skip(1)
 
+# data =  """ 
+#     program celcius_to_farenheit;
+#     var celcius, farenheit : float;
+#     main {
+#         celcius = 10.0
+#         farenheit = (celcius * 9 / 5) + 32;
+#         print(farenheit);
+#         if(farenheit > 70){
+#             print("Calido");
+#         } else { 
+#             print("Fresco")
+#         }
+#     }
+#     end
+#   """
 
+program = ""
 
+with open('mayor_de_2.ld', 'r') as file:
+    program = file.read()
 
-data =  """ 
-    program celcius_to_farenheit;
-    var celcius, farenheit : float;
-    main {
-        celcius = 10.0
-        farenheit = (celcius * 9 / 5) + 32;
-        print(farenheit);
-        if(farenheit > 70){
-            print("Calido");
-        } else {
-            print("Fresco")
-        }
-    }
-    end
-  """
+program = program.splitlines()
+
 
 lexer = lex.lex()
 
-dataPerLine = data.splitlines()
 indx = 0
 errors = []
-simbolos = defaultdict(list)
-
-for indx, line in enumerate(dataPerLine):
+simbolos = {}
+for indx, line in enumerate(program):
     
     line = line.strip()
 
