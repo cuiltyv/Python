@@ -1,4 +1,5 @@
 import ply.lex as lex
+from collections import defaultdict
 
 reserved = {
     'if' : 'IF',
@@ -66,6 +67,13 @@ def t_COMMENT(t):
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value,'IDENTIFIER')   # Check for reserved words
+    if(t.type == 'IDENTIFIER'):
+    #     simbolos[t.value].append((t.type, indx, t.lexpos))
+        if(t.value in simbolos):
+            simbolos[t.value].append((t.type, indx, t.lexpos))
+        else:
+            simbolos[t.value] = [(t.type, indx, t.lexpos)]
+        
     return t
 
 def t_CONST_FLOAT (t):
@@ -93,30 +101,63 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print(f"Illegal character {t.value[0]} in position {t.lexpos}")
+    errors.append((t.value[0], t.lexpos, indx))
     t.lexer.skip(1)
 
+# data =  """ 
+#     program celcius_to_farenheit;
+#     var celcius, farenheit : float;
+#     main {
+#         celcius = 10.0
+#         farenheit = (celcius * 9 / 5) + 32;
+#         print(farenheit);
+#         if(farenheit > 70){
+#             print("Calido");
+#         } else { 
+#             print("Fresco")
+#         }
+#     }
+#     end
+#   """
+
+program = ""
+
+with open('mayor_de_2.ld', 'r') as file:
+    program = file.read()
+
+program = program.splitlines()
 
 lexer = lex.lex()
 
-data =  """ 
+indx = 0
+errors = []
+simbolos = {}
+for indx, line in enumerate(program):
+    
+    line = line.strip()
 
-      if a = 27;
-      otra_var = 12;
-      print("Hola Mundo!");
-        # Esto es un comentario
-        var = 3.14;
-        var2 = (var + 2) * 3.14;
-        [] {}
-  """
+    lexer.input(line)
 
-lexer.input(data)
+    print(f"Linea {indx}: {line if line else 'Linea Vacia'}")
 
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        # print(tok)
+        print(f"{tok.type:<15} value: {tok.value:<8} lexpos: {tok.lexpos}")
+   
+   #LexToken({self.type},{self.value!r},{self.lineno},{self.lexpos}) <- Asi se asigna el valor al tok = lexer.token()
+        
+    print()
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+print("Tabla de Errores")
+for error, pos, index in errors:
+    print(f"Error: {error:<6} linea: {index:<6} lexpos: {pos}")
 
+print("\nTabla de Simbolos")
+for substring, attributes in simbolos.items():
+      for (token,line,index) in attributes:
+        print(f"Token: {token:<14} valor: {substring:<8} linea: {line:<8} lexpos: {index}")
 
