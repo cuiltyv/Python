@@ -128,7 +128,6 @@ with open('mayor_de_2.ld', 'r') as file:
 
 program = program.splitlines()
 
-
 lexer = lex.lex()
 
 indx = 0
@@ -161,3 +160,4 @@ print("\nTabla de Simbolos")
 for substring, attributes in simbolos.items():
       for (token,line,index) in attributes:
         print(f"Token: {token:<14} valor: {substring:<8} linea: {line:<8} lexpos: {index}")
+
