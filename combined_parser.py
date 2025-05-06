@@ -1,7 +1,7 @@
 import ply.lex as lex
 from collections import defaultdict
 
-# Lexer definition
+# Palabras reservadas
 reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
@@ -18,13 +18,17 @@ reserved = {
     'end' : 'END',
 } 
 
+# Tokens
 tokens = [
     'CONST_INT',
     'IDENTIFIER',
     'OP_ASIGNA',
     'EQUALS',
     'SEMICOL',
-    'OP_ARITH',
+    'OP_SUM',
+    'OP_SUB',
+    'OP_MULT',
+    'OP_DIV',
     'COMMA',
     'LPAREN',
     'RPAREN',
@@ -43,10 +47,14 @@ tokens = [
     'CONST_STRING',
 ] + list(reserved.values())
 
+# Expresiones regulares
 t_OP_ASIGNA = r'='
 t_EQUALS = r'=='
 t_SEMICOL = r';'
-t_OP_ARITH = r'[-+*/]'
+t_OP_SUM = r'+'
+t_OP_SUB = r'-'
+t_OP_MULT = r'*'
+t_OP_DIV = r'/'
 t_COMMA = r','
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
@@ -61,6 +69,7 @@ t_LESS_EQUAL = r'<='
 t_GREATER_EQUAL = r'>='
 t_COLON = r':'
 
+#Funciones de expresiones regulares
 def t_COMMENT(t):
     r'\#.*'
     return t
@@ -95,25 +104,25 @@ def t_error(t):
     print(f"Illegal character {t.value[0]} in position {t.lexpos}")
     t.lexer.skip(1)
 
-# Build the lexer
+# Crear el lexer
 lexer = lex.lex()
 
-# Recursive Descent Parser
+# Clase de tokens
 class Tokens:
     def __init__(self, text):
         self.tokens = []
         self.pos = 0
         
-        # Use PLY lexer to tokenize the input
+        # A comparacion del codigo orignal, aqui se agrega un while que recorre el texto por el lexer y va agregando los tokens al array de tokens
         lexer.input(text)
         while True:
             tok = lexer.token()
             if not tok:
                 break
-            # Convert PLY token to our expected format
+
             self.tokens.append((tok.type, tok.value))
         
-        # Add EOL token at the end
+        # Agregar el token EOL al final
         self.tokens.append(("EOL", ""))
 
     def current(self):
@@ -126,6 +135,7 @@ class Tokens:
 def addError(errors, expected, token, index):
     errors.append(f"ERROR en index {index}: esperaba {expected}, recibio {token}")
 
+#FACTOR ::= '(' EXPRESION ')'| ( '+' | '-' )? ( 'id' | CTE )
 def factor(tokens, errors):
     token, content = tokens.current()
 
@@ -145,6 +155,7 @@ def factor(tokens, errors):
         else:
             cte(tokens, errors)
 
+# CTE ::= 'cte_int'| 'cte_float'
 def cte(tokens, errors):
     token, content = tokens.current()
     if token == "CONST_INT":
@@ -154,6 +165,7 @@ def cte(tokens, errors):
     else:
         addError(errors, "CONST_INT o CONST_FLOAT", content, tokens.pos)
 
+# TERMINO_PRIME ::= ( ( '*' | '/' ) FACTOR TERMINO_PRIME )*
 def termino_prime(tokens, errors):
     token, content = tokens.current()
 
@@ -162,10 +174,12 @@ def termino_prime(tokens, errors):
         factor(tokens, errors)
         termino_prime(tokens, errors)
 
+# TERMINO ::= FACTOR TERMINO_PRIME
 def termino(tokens, errors):
     factor(tokens, errors)
     termino_prime(tokens, errors)
 
+# EXP_PRIME ::= ( ( '+' | '-' ) TERMINO EXP_PRIME)*
 def expr_prime(tokens, errors):
     token, content = tokens.current()
     
@@ -174,10 +188,12 @@ def expr_prime(tokens, errors):
         termino(tokens, errors)
         expr_prime(tokens, errors)
 
+# EXP ::= TERMINO EXP_PRIME
 def expr(tokens, errors):
     termino(tokens, errors)
     expr_prime(tokens, errors)
 
+# EXPRESION::= EXP ( ( '>' | '<' | '!=' | '==' | '<=' | '>=' ) EXP )?
 def expresion(tokens, errors):
     expr(tokens, errors)
     token, content = tokens.current()
@@ -199,9 +215,8 @@ def expresion(tokens, errors):
     elif token == "EQUALS":
         token, content = tokens.avanza()
         expr(tokens, errors)
-
-        
-
+       
+# ASSIGN ::= 'id' '=' EXPRESION ';'
 def assign(tokens, errors):
     token, content = tokens.current()
     if token == "IDENTIFIER":
@@ -219,13 +234,13 @@ def assign(tokens, errors):
     else:
         addError(errors, "IDENTIFIER", content, tokens.pos)
         
-
-def parse_expression(text):
+# Inicio de el parser
+def parser(text):
     tokens = Tokens(text)
     errors = []
     assign(tokens, errors)
 
-    if tokens.pos < len(tokens.tokens)-1:
+    if tokens.pos < len(tokens.tokens)-1: #   Si no se consumio toda la linea, hubo algun token inesperado
         addError(errors, "operador", tokens.current(), tokens.pos)
 
     return errors
@@ -240,7 +255,7 @@ program = program.splitlines()
 
 for line in program:
     print(f"\nTesting: {line}")
-    errors = parse_expression(line)
+    errors = parser(line)
     
     if len(errors) == 0:
         print("OKS")
