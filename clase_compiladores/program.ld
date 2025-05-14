@@ -1,17 +1,20 @@
-a = 14;
-b = 15.12;
-c = 15 * 12;
-d = a * b;
-e = -12 / 2;
-f = 4 + 2 / 4 - 2 * 5;
-g = 3 == 6;
-h = 4 < 1;
-i = (3-4) + 1;
-j = 3 + (1) / 4;
-k = (1;
-l = (3 + 1)
-m = 25+(2);
-n = 32<=2 * (21);
-x = 14 + (14 * 14);
-y = ;
-z = ();
+# programa para obtener el mayor entre 2 numeros
+
+program numero_mayor;
+
+var num1,num2 : int; # variables donde se guardan valores
+
+main {
+
+    num1 = 3
+    num2 = 10;
+
+    if (num1 > num2){
+        print("El mayor numero es num1")
+    }
+    else{
+        print("El mayor numero es num2");
+    }
+}
+end
+# final de programa
