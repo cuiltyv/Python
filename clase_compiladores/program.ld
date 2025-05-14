@@ -6,18 +6,15 @@ var num1,num2 : int; # variables donde se guardan valores
 
 main {
 
-    $num0 = 2;
     num1 = 3
-    num2 = 10
+    num2 = 10;
 
     if (num1 > num2){
-        print("El mayor numero es num1");
+        print("El mayor numero es num1")
     }
     else{
         print("El mayor numero es num2");
-    };
-
-
+    }
 }
-end 
+end
 # final de programa

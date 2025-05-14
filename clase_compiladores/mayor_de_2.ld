@@ -10,10 +10,10 @@ main {
     num2 = 10
 
     if (num1 > num2){
-        print("El mayor numero es num1)
+        print("El mayor numero es num1);
     }
     else{
-        print("El mayor numero es num2)
+        print("El mayor numero es num2);
     }
 
 
