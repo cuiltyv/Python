@@ -14,10 +14,10 @@ Rule 3     VARS_OPT -> empty
 Rule 4     FUNCS_OPT -> FUNCS FUNCS_OPT
 Rule 5     FUNCS_OPT -> empty
 Rule 6     VARS -> VAR VARS_INIT
-Rule 7     VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL
-Rule 8     VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT
-Rule 9     MORE_IDS -> COMMA IDENTIFIER MORE_IDS
-Rule 10    MORE_IDS -> empty
+Rule 7     VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL
+Rule 8     VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL VARS_INIT
+Rule 9     LISTA_IDS -> IDENTIFIER
+Rule 10    LISTA_IDS -> LISTA_IDS COMMA IDENTIFIER
 Rule 11    FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
 Rule 12    MORE_ARGS -> COMMA IDENTIFIER COLON TYPE MORE_ARGS
 Rule 13    MORE_ARGS -> empty
@@ -32,34 +32,34 @@ Rule 21    STATEMENT -> CYCLE
 Rule 22    STATEMENT -> F_CALL
 Rule 23    STATEMENT -> PRINTP
 Rule 24    ASSIGN -> IDENTIFIER OP_ASIGNA EXPRESION SEMICOL
-Rule 25    CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL
-Rule 26    ELSE_ARG -> ELSE Body
-Rule 27    ELSE_ARG -> empty
-Rule 28    CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
-Rule 29    PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
-Rule 30    PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
-Rule 31    MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS
-Rule 32    MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS
-Rule 33    MORE_PRINT_ARGS -> empty
-Rule 34    TYPE -> INT
-Rule 35    TYPE -> FLOAT
-Rule 36    EXPRESION -> EXP EXPRESION_OPT
-Rule 37    EXPRESION_OPT -> LESS EXP
-Rule 38    EXPRESION_OPT -> GREATER EXP
-Rule 39    EXPRESION_OPT -> NOT_EQUAL EXP
-Rule 40    EXPRESION_OPT -> EQUALS EXP
-Rule 41    EXPRESION_OPT -> LESS_EQUAL EXP
-Rule 42    EXPRESION_OPT -> GREATER_EQUAL EXP
-Rule 43    EXPRESION_OPT -> empty
-Rule 44    EXP -> TERMINO EXP_OPT
-Rule 45    EXP_OPT -> OP_SUM TERMINO EXP_OPT
-Rule 46    EXP_OPT -> OP_SUB TERMINO EXP_OPT
-Rule 47    EXP_OPT -> empty
-Rule 48    TERMINO -> FACTOR TERMINO_OPT
-Rule 49    TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT
-Rule 50    TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT
-Rule 51    TERMINO_OPT -> empty
-Rule 52    FACTOR -> LPAREN EXPRESION RPAREN
+Rule 25    CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
+Rule 26    CUADRUPLO_IF -> <empty>
+Rule 27    ELSE_ARG -> ELSE CUADRUPLO_ELSE Body
+Rule 28    CUADRUPLO_ELSE -> empty
+Rule 29    ELSE_ARG -> empty
+Rule 30    CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
+Rule 31    PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
+Rule 32    PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
+Rule 33    MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS
+Rule 34    MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS
+Rule 35    MORE_PRINT_ARGS -> empty
+Rule 36    TYPE -> INT
+Rule 37    TYPE -> FLOAT
+Rule 38    EXPRESION -> EXP
+Rule 39    EXPRESION -> EXP LESS EXP
+Rule 40    EXPRESION -> EXP GREATER EXP
+Rule 41    EXPRESION -> EXP NOT_EQUAL EXP
+Rule 42    EXPRESION -> EXP EQUALS EXP
+Rule 43    EXPRESION -> EXP LESS_EQUAL EXP
+Rule 44    EXPRESION -> EXP GREATER_EQUAL EXP
+Rule 45    EXP -> TERMINO
+Rule 46    EXP -> EXP OP_SUM TERMINO
+Rule 47    EXP -> EXP OP_SUB TERMINO
+Rule 48    TERMINO -> FACTOR
+Rule 49    TERMINO -> TERMINO OP_MULT FACTOR
+Rule 50    TERMINO -> TERMINO OP_DIV FACTOR
+Rule 51    FACTOR -> LPAREN EXPRESION RPAREN
+Rule 52    FACTOR -> IDENTIFIER
 Rule 53    FACTOR -> SIGN IDENTIFIER
 Rule 54    FACTOR -> SIGN CTE
 Rule 55    SIGN -> OP_SUM
@@ -70,85 +70,88 @@ Rule 59    OPT_EXPRESION -> EXPRESION MORE_EXPRESION
 Rule 60    OPT_EXPRESION -> empty
 Rule 61    MORE_EXPRESION -> COMMA EXPRESION MORE_EXPRESION
 Rule 62    MORE_EXPRESION -> empty
-Rule 63    CTE -> CONST_INT
-Rule 64    CTE -> CONST_FLOAT
-Rule 65    empty -> <empty>
+Rule 63    CTE -> CTE_INT
+Rule 64    CTE -> CTE_FLOAT
+Rule 65    CTE_INT -> CONST_INT
+Rule 66    CTE_FLOAT -> CONST_FLOAT
+Rule 67    empty -> <empty>
 
 Terminals, with rules where they appear
 
 COLON                : 7 8 12 14
-COMMA                : 9 12 31 32 61
+COMMA                : 10 12 33 34 61
 COMMENT              : 
-CONST_FLOAT          : 64
-CONST_INT            : 63
-CONST_STRING         : 29 31
-DO                   : 28
-ELSE                 : 26
+CONST_FLOAT          : 66
+CONST_INT            : 65
+CONST_STRING         : 31 33
+DO                   : 30
+ELSE                 : 27
 END                  : 1
-EQUALS               : 40
-FLOAT                : 35
-GREATER              : 38
-GREATER_EQUAL        : 42
-IDENTIFIER           : 1 7 8 9 11 12 14 24 53 58
+EQUALS               : 42
+FLOAT                : 37
+GREATER              : 40
+GREATER_EQUAL        : 44
+IDENTIFIER           : 1 9 10 11 12 14 24 52 53 58
 IF                   : 25
-INT                  : 34
+INT                  : 36
 LBRACKET             : 16
-LESS                 : 37
-LESS_EQUAL           : 41
-LPAREN               : 11 25 28 29 30 52 58
+LESS                 : 39
+LESS_EQUAL           : 43
+LPAREN               : 11 25 30 31 32 51 58
 LSQBRACKET           : 11
 MAIN                 : 1
-NOT_EQUAL            : 39
+NOT_EQUAL            : 41
 OP_ASIGNA            : 24
 OP_DIV               : 50
 OP_MULT              : 49
-OP_SUB               : 46 56
-OP_SUM               : 45 55
-PRINT                : 29 30
+OP_SUB               : 47 56
+OP_SUM               : 46 55
+PRINT                : 31 32
 PROGRAM              : 1
 RBRACKET             : 16
-RPAREN               : 11 25 28 29 30 52 58
+RPAREN               : 11 25 30 31 32 51 58
 RSQBRACKET           : 11
-SEMICOL              : 1 7 8 11 24 25 28 29 30 58
+SEMICOL              : 1 7 8 11 24 25 30 31 32 58
 STRING               : 
 VAR                  : 6
 VOID                 : 11
-WHILE                : 28
+WHILE                : 30
 error                : 
 
 Nonterminals, with rules where they appear
 
 ARGS                 : 11
 ASSIGN               : 19
-Body                 : 1 11 25 26 28
+Body                 : 1 11 25 27 30
 CONDITION            : 20
 CTE                  : 54
+CTE_FLOAT            : 64
+CTE_INT              : 63
+CUADRUPLO_ELSE       : 27
+CUADRUPLO_IF         : 25
 CYCLE                : 21
 ELSE_ARG             : 25
-EXP                  : 36 37 38 39 40 41 42
-EXPRESION            : 24 25 28 30 32 52 59 61
-EXPRESION_OPT        : 36
-EXP_OPT              : 44 45 46
+EXP                  : 38 39 39 40 40 41 41 42 42 43 43 44 44 46 47
+EXPRESION            : 24 25 30 32 34 51 59 61
 FACTOR               : 48 49 50
 FUNCS                : 4
 FUNCS_OPT            : 1 4
 F_CALL               : 22
+LISTA_IDS            : 7 8 10
 MORE_ARGS            : 12 14
 MORE_EXPRESION       : 59 61
-MORE_IDS             : 7 8 9
-MORE_PRINT_ARGS      : 29 30 31 32
+MORE_PRINT_ARGS      : 31 32 33 34
 OPT_EXPRESION        : 58
 PRINTP               : 23
 SIGN                 : 53 54
 STATEMENT            : 17
 STATEMENT_OPT        : 16 17
-TERMINO              : 44 45 46
-TERMINO_OPT          : 48 49 50
+TERMINO              : 45 46 47 49 50
 TYPE                 : 7 8 12 14
 VARS                 : 2
 VARS_INIT            : 6 8
 VARS_OPT             : 1 11
-empty                : 3 5 10 13 15 18 27 33 43 47 51 57 60 62
+empty                : 3 5 13 15 18 28 29 35 57 60 62
 program              : 0
 
 Parsing method: LALR
@@ -188,11 +191,11 @@ state 4
     (2) VARS_OPT -> . VARS
     (3) VARS_OPT -> . empty
     (6) VARS -> . VAR VARS_INIT
-    (65) empty -> .
+    (67) empty -> .
 
     VAR             shift and go to state 8
-    VOID            reduce using rule 65 (empty -> .)
-    MAIN            reduce using rule 65 (empty -> .)
+    VOID            reduce using rule 67 (empty -> .)
+    MAIN            reduce using rule 67 (empty -> .)
 
     VARS_OPT                       shift and go to state 5
     VARS                           shift and go to state 6
@@ -204,10 +207,10 @@ state 5
     (4) FUNCS_OPT -> . FUNCS FUNCS_OPT
     (5) FUNCS_OPT -> . empty
     (11) FUNCS -> . VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
-    (65) empty -> .
+    (67) empty -> .
 
     VOID            shift and go to state 12
-    MAIN            reduce using rule 65 (empty -> .)
+    MAIN            reduce using rule 67 (empty -> .)
 
     FUNCS_OPT                      shift and go to state 9
     FUNCS                          shift and go to state 10
@@ -234,18 +237,21 @@ state 7
 state 8
 
     (6) VARS -> VAR . VARS_INIT
-    (7) VARS_INIT -> . IDENTIFIER MORE_IDS COLON TYPE SEMICOL
-    (8) VARS_INIT -> . IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT
+    (7) VARS_INIT -> . LISTA_IDS COLON TYPE SEMICOL
+    (8) VARS_INIT -> . LISTA_IDS COLON TYPE SEMICOL VARS_INIT
+    (9) LISTA_IDS -> . IDENTIFIER
+    (10) LISTA_IDS -> . LISTA_IDS COMMA IDENTIFIER
 
-    IDENTIFIER      shift and go to state 14
+    IDENTIFIER      shift and go to state 15
 
     VARS_INIT                      shift and go to state 13
+    LISTA_IDS                      shift and go to state 14
 
 state 9
 
     (1) program -> PROGRAM IDENTIFIER SEMICOL VARS_OPT FUNCS_OPT . MAIN Body END
 
-    MAIN            shift and go to state 15
+    MAIN            shift and go to state 16
 
 
 state 10
@@ -254,13 +260,13 @@ state 10
     (4) FUNCS_OPT -> . FUNCS FUNCS_OPT
     (5) FUNCS_OPT -> . empty
     (11) FUNCS -> . VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
-    (65) empty -> .
+    (67) empty -> .
 
     VOID            shift and go to state 12
-    MAIN            reduce using rule 65 (empty -> .)
+    MAIN            reduce using rule 67 (empty -> .)
 
     FUNCS                          shift and go to state 10
-    FUNCS_OPT                      shift and go to state 16
+    FUNCS_OPT                      shift and go to state 17
     empty                          shift and go to state 11
 
 state 11
@@ -274,7 +280,7 @@ state 12
 
     (11) FUNCS -> VOID . IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
 
-    IDENTIFIER      shift and go to state 17
+    IDENTIFIER      shift and go to state 18
 
 
 state 13
@@ -288,19 +294,23 @@ state 13
 
 state 14
 
-    (7) VARS_INIT -> IDENTIFIER . MORE_IDS COLON TYPE SEMICOL
-    (8) VARS_INIT -> IDENTIFIER . MORE_IDS COLON TYPE SEMICOL VARS_INIT
-    (9) MORE_IDS -> . COMMA IDENTIFIER MORE_IDS
-    (10) MORE_IDS -> . empty
-    (65) empty -> .
+    (7) VARS_INIT -> LISTA_IDS . COLON TYPE SEMICOL
+    (8) VARS_INIT -> LISTA_IDS . COLON TYPE SEMICOL VARS_INIT
+    (10) LISTA_IDS -> LISTA_IDS . COMMA IDENTIFIER
 
-    COMMA           shift and go to state 19
-    COLON           reduce using rule 65 (empty -> .)
+    COLON           shift and go to state 19
+    COMMA           shift and go to state 20
 
-    MORE_IDS                       shift and go to state 18
-    empty                          shift and go to state 20
 
 state 15
+
+    (9) LISTA_IDS -> IDENTIFIER .
+
+    COLON           reduce using rule 9 (LISTA_IDS -> IDENTIFIER .)
+    COMMA           reduce using rule 9 (LISTA_IDS -> IDENTIFIER .)
+
+
+state 16
 
     (1) program -> PROGRAM IDENTIFIER SEMICOL VARS_OPT FUNCS_OPT MAIN . Body END
     (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
@@ -309,47 +319,44 @@ state 15
 
     Body                           shift and go to state 21
 
-state 16
+state 17
 
     (4) FUNCS_OPT -> FUNCS FUNCS_OPT .
 
     MAIN            reduce using rule 4 (FUNCS_OPT -> FUNCS FUNCS_OPT .)
 
 
-state 17
+state 18
 
     (11) FUNCS -> VOID IDENTIFIER . LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
 
     LPAREN          shift and go to state 23
 
 
-state 18
-
-    (7) VARS_INIT -> IDENTIFIER MORE_IDS . COLON TYPE SEMICOL
-    (8) VARS_INIT -> IDENTIFIER MORE_IDS . COLON TYPE SEMICOL VARS_INIT
-
-    COLON           shift and go to state 24
-
-
 state 19
 
-    (9) MORE_IDS -> COMMA . IDENTIFIER MORE_IDS
+    (7) VARS_INIT -> LISTA_IDS COLON . TYPE SEMICOL
+    (8) VARS_INIT -> LISTA_IDS COLON . TYPE SEMICOL VARS_INIT
+    (36) TYPE -> . INT
+    (37) TYPE -> . FLOAT
 
-    IDENTIFIER      shift and go to state 25
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
 
+    TYPE                           shift and go to state 24
 
 state 20
 
-    (10) MORE_IDS -> empty .
+    (10) LISTA_IDS -> LISTA_IDS COMMA . IDENTIFIER
 
-    COLON           reduce using rule 10 (MORE_IDS -> empty .)
+    IDENTIFIER      shift and go to state 27
 
 
 state 21
 
     (1) program -> PROGRAM IDENTIFIER SEMICOL VARS_OPT FUNCS_OPT MAIN Body . END
 
-    END             shift and go to state 26
+    END             shift and go to state 28
 
 
 state 22
@@ -362,82 +369,91 @@ state 22
     (21) STATEMENT -> . CYCLE
     (22) STATEMENT -> . F_CALL
     (23) STATEMENT -> . PRINTP
-    (65) empty -> .
+    (67) empty -> .
     (24) ASSIGN -> . IDENTIFIER OP_ASIGNA EXPRESION SEMICOL
-    (25) CONDITION -> . IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL
-    (28) CYCLE -> . DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
+    (25) CONDITION -> . IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
+    (30) CYCLE -> . DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
     (58) F_CALL -> . IDENTIFIER LPAREN OPT_EXPRESION RPAREN SEMICOL
-    (29) PRINTP -> . PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
-    (30) PRINTP -> . PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
+    (31) PRINTP -> . PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
+    (32) PRINTP -> . PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
 
-    RBRACKET        reduce using rule 65 (empty -> .)
-    IDENTIFIER      shift and go to state 35
-    IF              shift and go to state 36
-    DO              shift and go to state 37
-    PRINT           shift and go to state 38
+    RBRACKET        reduce using rule 67 (empty -> .)
+    IDENTIFIER      shift and go to state 37
+    IF              shift and go to state 38
+    DO              shift and go to state 39
+    PRINT           shift and go to state 40
 
-    STATEMENT_OPT                  shift and go to state 27
-    STATEMENT                      shift and go to state 28
-    empty                          shift and go to state 29
-    ASSIGN                         shift and go to state 30
-    CONDITION                      shift and go to state 31
-    CYCLE                          shift and go to state 32
-    F_CALL                         shift and go to state 33
-    PRINTP                         shift and go to state 34
+    STATEMENT_OPT                  shift and go to state 29
+    STATEMENT                      shift and go to state 30
+    empty                          shift and go to state 31
+    ASSIGN                         shift and go to state 32
+    CONDITION                      shift and go to state 33
+    CYCLE                          shift and go to state 34
+    F_CALL                         shift and go to state 35
+    PRINTP                         shift and go to state 36
 
 state 23
 
     (11) FUNCS -> VOID IDENTIFIER LPAREN . ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
     (14) ARGS -> . IDENTIFIER COLON TYPE MORE_ARGS
     (15) ARGS -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    IDENTIFIER      shift and go to state 39
-    RPAREN          reduce using rule 65 (empty -> .)
+    IDENTIFIER      shift and go to state 41
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    ARGS                           shift and go to state 40
-    empty                          shift and go to state 41
+    ARGS                           shift and go to state 42
+    empty                          shift and go to state 43
 
 state 24
 
-    (7) VARS_INIT -> IDENTIFIER MORE_IDS COLON . TYPE SEMICOL
-    (8) VARS_INIT -> IDENTIFIER MORE_IDS COLON . TYPE SEMICOL VARS_INIT
-    (34) TYPE -> . INT
-    (35) TYPE -> . FLOAT
+    (7) VARS_INIT -> LISTA_IDS COLON TYPE . SEMICOL
+    (8) VARS_INIT -> LISTA_IDS COLON TYPE . SEMICOL VARS_INIT
 
-    INT             shift and go to state 43
-    FLOAT           shift and go to state 44
+    SEMICOL         shift and go to state 44
 
-    TYPE                           shift and go to state 42
 
 state 25
 
-    (9) MORE_IDS -> COMMA IDENTIFIER . MORE_IDS
-    (9) MORE_IDS -> . COMMA IDENTIFIER MORE_IDS
-    (10) MORE_IDS -> . empty
-    (65) empty -> .
+    (36) TYPE -> INT .
 
-    COMMA           shift and go to state 19
-    COLON           reduce using rule 65 (empty -> .)
+    SEMICOL         reduce using rule 36 (TYPE -> INT .)
+    COMMA           reduce using rule 36 (TYPE -> INT .)
+    RPAREN          reduce using rule 36 (TYPE -> INT .)
 
-    MORE_IDS                       shift and go to state 45
-    empty                          shift and go to state 20
 
 state 26
+
+    (37) TYPE -> FLOAT .
+
+    SEMICOL         reduce using rule 37 (TYPE -> FLOAT .)
+    COMMA           reduce using rule 37 (TYPE -> FLOAT .)
+    RPAREN          reduce using rule 37 (TYPE -> FLOAT .)
+
+
+state 27
+
+    (10) LISTA_IDS -> LISTA_IDS COMMA IDENTIFIER .
+
+    COLON           reduce using rule 10 (LISTA_IDS -> LISTA_IDS COMMA IDENTIFIER .)
+    COMMA           reduce using rule 10 (LISTA_IDS -> LISTA_IDS COMMA IDENTIFIER .)
+
+
+state 28
 
     (1) program -> PROGRAM IDENTIFIER SEMICOL VARS_OPT FUNCS_OPT MAIN Body END .
 
     $end            reduce using rule 1 (program -> PROGRAM IDENTIFIER SEMICOL VARS_OPT FUNCS_OPT MAIN Body END .)
 
 
-state 27
+state 29
 
     (16) Body -> LBRACKET STATEMENT_OPT . RBRACKET
 
-    RBRACKET        shift and go to state 46
+    RBRACKET        shift and go to state 45
 
 
-state 28
+state 30
 
     (17) STATEMENT_OPT -> STATEMENT . STATEMENT_OPT
     (17) STATEMENT_OPT -> . STATEMENT STATEMENT_OPT
@@ -447,37 +463,37 @@ state 28
     (21) STATEMENT -> . CYCLE
     (22) STATEMENT -> . F_CALL
     (23) STATEMENT -> . PRINTP
-    (65) empty -> .
+    (67) empty -> .
     (24) ASSIGN -> . IDENTIFIER OP_ASIGNA EXPRESION SEMICOL
-    (25) CONDITION -> . IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL
-    (28) CYCLE -> . DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
+    (25) CONDITION -> . IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
+    (30) CYCLE -> . DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL
     (58) F_CALL -> . IDENTIFIER LPAREN OPT_EXPRESION RPAREN SEMICOL
-    (29) PRINTP -> . PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
-    (30) PRINTP -> . PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
+    (31) PRINTP -> . PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
+    (32) PRINTP -> . PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
 
-    RBRACKET        reduce using rule 65 (empty -> .)
-    IDENTIFIER      shift and go to state 35
-    IF              shift and go to state 36
-    DO              shift and go to state 37
-    PRINT           shift and go to state 38
+    RBRACKET        reduce using rule 67 (empty -> .)
+    IDENTIFIER      shift and go to state 37
+    IF              shift and go to state 38
+    DO              shift and go to state 39
+    PRINT           shift and go to state 40
 
-    STATEMENT                      shift and go to state 28
-    STATEMENT_OPT                  shift and go to state 47
-    empty                          shift and go to state 29
-    ASSIGN                         shift and go to state 30
-    CONDITION                      shift and go to state 31
-    CYCLE                          shift and go to state 32
-    F_CALL                         shift and go to state 33
-    PRINTP                         shift and go to state 34
+    STATEMENT                      shift and go to state 30
+    STATEMENT_OPT                  shift and go to state 46
+    empty                          shift and go to state 31
+    ASSIGN                         shift and go to state 32
+    CONDITION                      shift and go to state 33
+    CYCLE                          shift and go to state 34
+    F_CALL                         shift and go to state 35
+    PRINTP                         shift and go to state 36
 
-state 29
+state 31
 
     (18) STATEMENT_OPT -> empty .
 
     RBRACKET        reduce using rule 18 (STATEMENT_OPT -> empty .)
 
 
-state 30
+state 32
 
     (19) STATEMENT -> ASSIGN .
 
@@ -488,7 +504,7 @@ state 30
     RBRACKET        reduce using rule 19 (STATEMENT -> ASSIGN .)
 
 
-state 31
+state 33
 
     (20) STATEMENT -> CONDITION .
 
@@ -499,7 +515,7 @@ state 31
     RBRACKET        reduce using rule 20 (STATEMENT -> CONDITION .)
 
 
-state 32
+state 34
 
     (21) STATEMENT -> CYCLE .
 
@@ -510,7 +526,7 @@ state 32
     RBRACKET        reduce using rule 21 (STATEMENT -> CYCLE .)
 
 
-state 33
+state 35
 
     (22) STATEMENT -> F_CALL .
 
@@ -521,7 +537,7 @@ state 33
     RBRACKET        reduce using rule 22 (STATEMENT -> F_CALL .)
 
 
-state 34
+state 36
 
     (23) STATEMENT -> PRINTP .
 
@@ -532,390 +548,376 @@ state 34
     RBRACKET        reduce using rule 23 (STATEMENT -> PRINTP .)
 
 
-state 35
+state 37
 
     (24) ASSIGN -> IDENTIFIER . OP_ASIGNA EXPRESION SEMICOL
     (58) F_CALL -> IDENTIFIER . LPAREN OPT_EXPRESION RPAREN SEMICOL
 
-    OP_ASIGNA       shift and go to state 48
-    LPAREN          shift and go to state 49
+    OP_ASIGNA       shift and go to state 47
+    LPAREN          shift and go to state 48
 
-
-state 36
-
-    (25) CONDITION -> IF . LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL
-
-    LPAREN          shift and go to state 50
-
-
-state 37
-
-    (28) CYCLE -> DO . Body WHILE LPAREN EXPRESION RPAREN SEMICOL
-    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
-
-    LBRACKET        shift and go to state 22
-
-    Body                           shift and go to state 51
 
 state 38
 
-    (29) PRINTP -> PRINT . LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
-    (30) PRINTP -> PRINT . LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
+    (25) CONDITION -> IF . LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
 
-    LPAREN          shift and go to state 52
+    LPAREN          shift and go to state 49
 
 
 state 39
 
-    (14) ARGS -> IDENTIFIER . COLON TYPE MORE_ARGS
+    (30) CYCLE -> DO . Body WHILE LPAREN EXPRESION RPAREN SEMICOL
+    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
 
-    COLON           shift and go to state 53
+    LBRACKET        shift and go to state 22
 
+    Body                           shift and go to state 50
 
 state 40
 
-    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS . RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
+    (31) PRINTP -> PRINT . LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
+    (32) PRINTP -> PRINT . LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
 
-    RPAREN          shift and go to state 54
+    LPAREN          shift and go to state 51
 
 
 state 41
+
+    (14) ARGS -> IDENTIFIER . COLON TYPE MORE_ARGS
+
+    COLON           shift and go to state 52
+
+
+state 42
+
+    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS . RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
+
+    RPAREN          shift and go to state 53
+
+
+state 43
 
     (15) ARGS -> empty .
 
     RPAREN          reduce using rule 15 (ARGS -> empty .)
 
 
-state 42
-
-    (7) VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE . SEMICOL
-    (8) VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE . SEMICOL VARS_INIT
-
-    SEMICOL         shift and go to state 55
-
-
-state 43
-
-    (34) TYPE -> INT .
-
-    SEMICOL         reduce using rule 34 (TYPE -> INT .)
-    COMMA           reduce using rule 34 (TYPE -> INT .)
-    RPAREN          reduce using rule 34 (TYPE -> INT .)
-
-
 state 44
 
-    (35) TYPE -> FLOAT .
+    (7) VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL .
+    (8) VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL . VARS_INIT
+    (7) VARS_INIT -> . LISTA_IDS COLON TYPE SEMICOL
+    (8) VARS_INIT -> . LISTA_IDS COLON TYPE SEMICOL VARS_INIT
+    (9) LISTA_IDS -> . IDENTIFIER
+    (10) LISTA_IDS -> . LISTA_IDS COMMA IDENTIFIER
 
-    SEMICOL         reduce using rule 35 (TYPE -> FLOAT .)
-    COMMA           reduce using rule 35 (TYPE -> FLOAT .)
-    RPAREN          reduce using rule 35 (TYPE -> FLOAT .)
+    VOID            reduce using rule 7 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL .)
+    MAIN            reduce using rule 7 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL .)
+    LBRACKET        reduce using rule 7 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL .)
+    IDENTIFIER      shift and go to state 15
 
+    LISTA_IDS                      shift and go to state 14
+    VARS_INIT                      shift and go to state 54
 
 state 45
-
-    (9) MORE_IDS -> COMMA IDENTIFIER MORE_IDS .
-
-    COLON           reduce using rule 9 (MORE_IDS -> COMMA IDENTIFIER MORE_IDS .)
-
-
-state 46
 
     (16) Body -> LBRACKET STATEMENT_OPT RBRACKET .
 
     END             reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
     WHILE           reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
+    RSQBRACKET      reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
     ELSE            reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
     SEMICOL         reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
-    RSQBRACKET      reduce using rule 16 (Body -> LBRACKET STATEMENT_OPT RBRACKET .)
 
 
-state 47
+state 46
 
     (17) STATEMENT_OPT -> STATEMENT STATEMENT_OPT .
 
     RBRACKET        reduce using rule 17 (STATEMENT_OPT -> STATEMENT STATEMENT_OPT .)
 
 
-state 48
+state 47
 
     (24) ASSIGN -> IDENTIFIER OP_ASIGNA . EXPRESION SEMICOL
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
 
     EXPRESION                      shift and go to state 56
     EXP                            shift and go to state 57
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
-state 49
+state 48
 
     (58) F_CALL -> IDENTIFIER LPAREN . OPT_EXPRESION RPAREN SEMICOL
     (59) OPT_EXPRESION -> . EXPRESION MORE_EXPRESION
     (60) OPT_EXPRESION -> . empty
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (65) empty -> .
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (67) empty -> .
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
 
-    RPAREN          reduce using rule 65 (empty -> .)
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    RPAREN          reduce using rule 67 (empty -> .)
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
 
     OPT_EXPRESION                  shift and go to state 65
     EXPRESION                      shift and go to state 66
     empty                          shift and go to state 67
     EXP                            shift and go to state 57
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
 
-state 50
+state 49
 
-    (25) CONDITION -> IF LPAREN . EXPRESION RPAREN Body ELSE_ARG SEMICOL
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (25) CONDITION -> IF LPAREN . EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
 
     EXPRESION                      shift and go to state 68
     EXP                            shift and go to state 57
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
-state 51
+state 50
 
-    (28) CYCLE -> DO Body . WHILE LPAREN EXPRESION RPAREN SEMICOL
+    (30) CYCLE -> DO Body . WHILE LPAREN EXPRESION RPAREN SEMICOL
 
     WHILE           shift and go to state 69
 
 
-state 52
+state 51
 
-    (29) PRINTP -> PRINT LPAREN . CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
-    (30) PRINTP -> PRINT LPAREN . EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (31) PRINTP -> PRINT LPAREN . CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL
+    (32) PRINTP -> PRINT LPAREN . EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
     CONST_STRING    shift and go to state 70
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
 
     EXPRESION                      shift and go to state 71
     EXP                            shift and go to state 57
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
-state 53
+state 52
 
     (14) ARGS -> IDENTIFIER COLON . TYPE MORE_ARGS
-    (34) TYPE -> . INT
-    (35) TYPE -> . FLOAT
+    (36) TYPE -> . INT
+    (37) TYPE -> . FLOAT
 
-    INT             shift and go to state 43
-    FLOAT           shift and go to state 44
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
 
     TYPE                           shift and go to state 72
 
-state 54
+state 53
 
     (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN . LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL
 
     LSQBRACKET      shift and go to state 73
 
 
+state 54
+
+    (8) VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL VARS_INIT .
+
+    VOID            reduce using rule 8 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL VARS_INIT .)
+    MAIN            reduce using rule 8 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL VARS_INIT .)
+    LBRACKET        reduce using rule 8 (VARS_INIT -> LISTA_IDS COLON TYPE SEMICOL VARS_INIT .)
+
+
 state 55
 
-    (7) VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL .
-    (8) VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL . VARS_INIT
-    (7) VARS_INIT -> . IDENTIFIER MORE_IDS COLON TYPE SEMICOL
-    (8) VARS_INIT -> . IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT
+    (52) FACTOR -> IDENTIFIER .
 
-    VOID            reduce using rule 7 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL .)
-    MAIN            reduce using rule 7 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL .)
-    LBRACKET        reduce using rule 7 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL .)
-    IDENTIFIER      shift and go to state 14
+    OP_MULT         reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    OP_DIV          reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    LESS            reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    GREATER         reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    NOT_EQUAL       reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    EQUALS          reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    LESS_EQUAL      reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    GREATER_EQUAL   reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    OP_SUM          reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    OP_SUB          reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    SEMICOL         reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    COMMA           reduce using rule 52 (FACTOR -> IDENTIFIER .)
+    RPAREN          reduce using rule 52 (FACTOR -> IDENTIFIER .)
 
-    VARS_INIT                      shift and go to state 74
 
 state 56
 
     (24) ASSIGN -> IDENTIFIER OP_ASIGNA EXPRESION . SEMICOL
 
-    SEMICOL         shift and go to state 75
+    SEMICOL         shift and go to state 74
 
 
 state 57
 
-    (36) EXPRESION -> EXP . EXPRESION_OPT
-    (37) EXPRESION_OPT -> . LESS EXP
-    (38) EXPRESION_OPT -> . GREATER EXP
-    (39) EXPRESION_OPT -> . NOT_EQUAL EXP
-    (40) EXPRESION_OPT -> . EQUALS EXP
-    (41) EXPRESION_OPT -> . LESS_EQUAL EXP
-    (42) EXPRESION_OPT -> . GREATER_EQUAL EXP
-    (43) EXPRESION_OPT -> . empty
-    (65) empty -> .
+    (38) EXPRESION -> EXP .
+    (39) EXPRESION -> EXP . LESS EXP
+    (40) EXPRESION -> EXP . GREATER EXP
+    (41) EXPRESION -> EXP . NOT_EQUAL EXP
+    (42) EXPRESION -> EXP . EQUALS EXP
+    (43) EXPRESION -> EXP . LESS_EQUAL EXP
+    (44) EXPRESION -> EXP . GREATER_EQUAL EXP
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
 
-    LESS            shift and go to state 77
-    GREATER         shift and go to state 78
-    NOT_EQUAL       shift and go to state 79
-    EQUALS          shift and go to state 80
-    LESS_EQUAL      shift and go to state 81
-    GREATER_EQUAL   shift and go to state 82
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
+    SEMICOL         reduce using rule 38 (EXPRESION -> EXP .)
+    COMMA           reduce using rule 38 (EXPRESION -> EXP .)
+    RPAREN          reduce using rule 38 (EXPRESION -> EXP .)
+    LESS            shift and go to state 75
+    GREATER         shift and go to state 76
+    NOT_EQUAL       shift and go to state 77
+    EQUALS          shift and go to state 78
+    LESS_EQUAL      shift and go to state 79
+    GREATER_EQUAL   shift and go to state 80
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
 
-    EXPRESION_OPT                  shift and go to state 76
-    empty                          shift and go to state 83
 
 state 58
 
-    (44) EXP -> TERMINO . EXP_OPT
-    (45) EXP_OPT -> . OP_SUM TERMINO EXP_OPT
-    (46) EXP_OPT -> . OP_SUB TERMINO EXP_OPT
-    (47) EXP_OPT -> . empty
-    (65) empty -> .
+    (45) EXP -> TERMINO .
+    (49) TERMINO -> TERMINO . OP_MULT FACTOR
+    (50) TERMINO -> TERMINO . OP_DIV FACTOR
 
-    OP_SUM          shift and go to state 85
-    OP_SUB          shift and go to state 86
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
+    LESS            reduce using rule 45 (EXP -> TERMINO .)
+    GREATER         reduce using rule 45 (EXP -> TERMINO .)
+    NOT_EQUAL       reduce using rule 45 (EXP -> TERMINO .)
+    EQUALS          reduce using rule 45 (EXP -> TERMINO .)
+    LESS_EQUAL      reduce using rule 45 (EXP -> TERMINO .)
+    GREATER_EQUAL   reduce using rule 45 (EXP -> TERMINO .)
+    OP_SUM          reduce using rule 45 (EXP -> TERMINO .)
+    OP_SUB          reduce using rule 45 (EXP -> TERMINO .)
+    SEMICOL         reduce using rule 45 (EXP -> TERMINO .)
+    COMMA           reduce using rule 45 (EXP -> TERMINO .)
+    RPAREN          reduce using rule 45 (EXP -> TERMINO .)
+    OP_MULT         shift and go to state 83
+    OP_DIV          shift and go to state 84
 
-    EXP_OPT                        shift and go to state 84
-    empty                          shift and go to state 87
 
 state 59
-
-    (48) TERMINO -> FACTOR . TERMINO_OPT
-    (49) TERMINO_OPT -> . OP_MULT FACTOR TERMINO_OPT
-    (50) TERMINO_OPT -> . OP_DIV FACTOR TERMINO_OPT
-    (51) TERMINO_OPT -> . empty
-    (65) empty -> .
-
-    OP_MULT         shift and go to state 89
-    OP_DIV          shift and go to state 90
-    OP_SUM          reduce using rule 65 (empty -> .)
-    OP_SUB          reduce using rule 65 (empty -> .)
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    TERMINO_OPT                    shift and go to state 88
-    empty                          shift and go to state 91
-
-state 60
-
-    (52) FACTOR -> LPAREN . EXPRESION RPAREN
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    EXPRESION                      shift and go to state 92
-    EXP                            shift and go to state 57
-    TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 61
-
-    (53) FACTOR -> SIGN . IDENTIFIER
-    (54) FACTOR -> SIGN . CTE
-    (63) CTE -> . CONST_INT
-    (64) CTE -> . CONST_FLOAT
-
-    IDENTIFIER      shift and go to state 93
-    CONST_INT       shift and go to state 95
-    CONST_FLOAT     shift and go to state 96
-
-    CTE                            shift and go to state 94
-
-state 62
 
     (55) SIGN -> OP_SUM .
 
@@ -924,7 +926,7 @@ state 62
     CONST_FLOAT     reduce using rule 55 (SIGN -> OP_SUM .)
 
 
-state 63
+state 60
 
     (56) SIGN -> OP_SUB .
 
@@ -932,6 +934,84 @@ state 63
     CONST_INT       reduce using rule 56 (SIGN -> OP_SUB .)
     CONST_FLOAT     reduce using rule 56 (SIGN -> OP_SUB .)
 
+
+state 61
+
+    (48) TERMINO -> FACTOR .
+
+    OP_MULT         reduce using rule 48 (TERMINO -> FACTOR .)
+    OP_DIV          reduce using rule 48 (TERMINO -> FACTOR .)
+    LESS            reduce using rule 48 (TERMINO -> FACTOR .)
+    GREATER         reduce using rule 48 (TERMINO -> FACTOR .)
+    NOT_EQUAL       reduce using rule 48 (TERMINO -> FACTOR .)
+    EQUALS          reduce using rule 48 (TERMINO -> FACTOR .)
+    LESS_EQUAL      reduce using rule 48 (TERMINO -> FACTOR .)
+    GREATER_EQUAL   reduce using rule 48 (TERMINO -> FACTOR .)
+    OP_SUM          reduce using rule 48 (TERMINO -> FACTOR .)
+    OP_SUB          reduce using rule 48 (TERMINO -> FACTOR .)
+    SEMICOL         reduce using rule 48 (TERMINO -> FACTOR .)
+    COMMA           reduce using rule 48 (TERMINO -> FACTOR .)
+    RPAREN          reduce using rule 48 (TERMINO -> FACTOR .)
+
+
+state 62
+
+    (51) FACTOR -> LPAREN . EXPRESION RPAREN
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
+
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXPRESION                      shift and go to state 85
+    EXP                            shift and go to state 57
+    TERMINO                        shift and go to state 58
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
+
+state 63
+
+    (53) FACTOR -> SIGN . IDENTIFIER
+    (54) FACTOR -> SIGN . CTE
+    (63) CTE -> . CTE_INT
+    (64) CTE -> . CTE_FLOAT
+    (65) CTE_INT -> . CONST_INT
+    (66) CTE_FLOAT -> . CONST_FLOAT
+
+    IDENTIFIER      shift and go to state 86
+    CONST_INT       shift and go to state 90
+    CONST_FLOAT     shift and go to state 91
+
+    CTE                            shift and go to state 87
+    CTE_INT                        shift and go to state 88
+    CTE_FLOAT                      shift and go to state 89
 
 state 64
 
@@ -946,7 +1026,7 @@ state 65
 
     (58) F_CALL -> IDENTIFIER LPAREN OPT_EXPRESION . RPAREN SEMICOL
 
-    RPAREN          shift and go to state 97
+    RPAREN          shift and go to state 92
 
 
 state 66
@@ -954,13 +1034,13 @@ state 66
     (59) OPT_EXPRESION -> EXPRESION . MORE_EXPRESION
     (61) MORE_EXPRESION -> . COMMA EXPRESION MORE_EXPRESION
     (62) MORE_EXPRESION -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    COMMA           shift and go to state 99
-    RPAREN          reduce using rule 65 (empty -> .)
+    COMMA           shift and go to state 94
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_EXPRESION                 shift and go to state 98
-    empty                          shift and go to state 100
+    MORE_EXPRESION                 shift and go to state 93
+    empty                          shift and go to state 95
 
 state 67
 
@@ -975,58 +1055,58 @@ state 67
 
 state 68
 
-    (25) CONDITION -> IF LPAREN EXPRESION . RPAREN Body ELSE_ARG SEMICOL
+    (25) CONDITION -> IF LPAREN EXPRESION . RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL
 
-    RPAREN          shift and go to state 101
+    RPAREN          shift and go to state 96
 
 
 state 69
 
-    (28) CYCLE -> DO Body WHILE . LPAREN EXPRESION RPAREN SEMICOL
+    (30) CYCLE -> DO Body WHILE . LPAREN EXPRESION RPAREN SEMICOL
 
-    LPAREN          shift and go to state 102
+    LPAREN          shift and go to state 97
 
 
 state 70
 
-    (29) PRINTP -> PRINT LPAREN CONST_STRING . MORE_PRINT_ARGS RPAREN SEMICOL
-    (31) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
-    (32) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
-    (33) MORE_PRINT_ARGS -> . empty
-    (65) empty -> .
+    (31) PRINTP -> PRINT LPAREN CONST_STRING . MORE_PRINT_ARGS RPAREN SEMICOL
+    (33) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
+    (34) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
+    (35) MORE_PRINT_ARGS -> . empty
+    (67) empty -> .
 
-    COMMA           shift and go to state 104
-    RPAREN          reduce using rule 65 (empty -> .)
+    COMMA           shift and go to state 99
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_PRINT_ARGS                shift and go to state 103
-    empty                          shift and go to state 105
+    MORE_PRINT_ARGS                shift and go to state 98
+    empty                          shift and go to state 100
 
 state 71
 
-    (30) PRINTP -> PRINT LPAREN EXPRESION . MORE_PRINT_ARGS RPAREN SEMICOL
-    (31) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
-    (32) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
-    (33) MORE_PRINT_ARGS -> . empty
-    (65) empty -> .
+    (32) PRINTP -> PRINT LPAREN EXPRESION . MORE_PRINT_ARGS RPAREN SEMICOL
+    (33) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
+    (34) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
+    (35) MORE_PRINT_ARGS -> . empty
+    (67) empty -> .
 
-    COMMA           shift and go to state 104
-    RPAREN          reduce using rule 65 (empty -> .)
+    COMMA           shift and go to state 99
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_PRINT_ARGS                shift and go to state 106
-    empty                          shift and go to state 105
+    MORE_PRINT_ARGS                shift and go to state 101
+    empty                          shift and go to state 100
 
 state 72
 
     (14) ARGS -> IDENTIFIER COLON TYPE . MORE_ARGS
     (12) MORE_ARGS -> . COMMA IDENTIFIER COLON TYPE MORE_ARGS
     (13) MORE_ARGS -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    COMMA           shift and go to state 108
-    RPAREN          reduce using rule 65 (empty -> .)
+    COMMA           shift and go to state 103
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_ARGS                      shift and go to state 107
-    empty                          shift and go to state 109
+    MORE_ARGS                      shift and go to state 102
+    empty                          shift and go to state 104
 
 state 73
 
@@ -1034,25 +1114,16 @@ state 73
     (2) VARS_OPT -> . VARS
     (3) VARS_OPT -> . empty
     (6) VARS -> . VAR VARS_INIT
-    (65) empty -> .
+    (67) empty -> .
 
     VAR             shift and go to state 8
-    LBRACKET        reduce using rule 65 (empty -> .)
+    LBRACKET        reduce using rule 67 (empty -> .)
 
-    VARS_OPT                       shift and go to state 110
+    VARS_OPT                       shift and go to state 105
     VARS                           shift and go to state 6
     empty                          shift and go to state 7
 
 state 74
-
-    (8) VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT .
-
-    VOID            reduce using rule 8 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT .)
-    MAIN            reduce using rule 8 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT .)
-    LBRACKET        reduce using rule 8 (VARS_INIT -> IDENTIFIER MORE_IDS COLON TYPE SEMICOL VARS_INIT .)
-
-
-state 75
 
     (24) ASSIGN -> IDENTIFIER OP_ASIGNA EXPRESION SEMICOL .
 
@@ -1063,756 +1134,830 @@ state 75
     RBRACKET        reduce using rule 24 (ASSIGN -> IDENTIFIER OP_ASIGNA EXPRESION SEMICOL .)
 
 
-state 76
+state 75
 
-    (36) EXPRESION -> EXP EXPRESION_OPT .
-
-    SEMICOL         reduce using rule 36 (EXPRESION -> EXP EXPRESION_OPT .)
-    COMMA           reduce using rule 36 (EXPRESION -> EXP EXPRESION_OPT .)
-    RPAREN          reduce using rule 36 (EXPRESION -> EXP EXPRESION_OPT .)
-
-
-state 77
-
-    (37) EXPRESION_OPT -> LESS . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (39) EXPRESION -> EXP LESS . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 111
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 106
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
+
+state 76
+
+    (40) EXPRESION -> EXP GREATER . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
+
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 107
+    TERMINO                        shift and go to state 58
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
+
+state 77
+
+    (41) EXPRESION -> EXP NOT_EQUAL . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
+
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 108
+    TERMINO                        shift and go to state 58
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 78
 
-    (38) EXPRESION_OPT -> GREATER . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (42) EXPRESION -> EXP EQUALS . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 112
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 109
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 79
 
-    (39) EXPRESION_OPT -> NOT_EQUAL . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (43) EXPRESION -> EXP LESS_EQUAL . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 113
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 110
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 80
 
-    (40) EXPRESION_OPT -> EQUALS . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (44) EXPRESION -> EXP GREATER_EQUAL . EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 114
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXP                            shift and go to state 111
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 81
 
-    (41) EXPRESION_OPT -> LESS_EQUAL . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (46) EXP -> EXP OP_SUM . TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 115
-    TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    TERMINO                        shift and go to state 112
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 82
 
-    (42) EXPRESION_OPT -> GREATER_EQUAL . EXP
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (47) EXP -> EXP OP_SUB . TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXP                            shift and go to state 116
-    TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    TERMINO                        shift and go to state 113
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
 state 83
 
-    (43) EXPRESION_OPT -> empty .
+    (49) TERMINO -> TERMINO OP_MULT . FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
 
-    SEMICOL         reduce using rule 43 (EXPRESION_OPT -> empty .)
-    COMMA           reduce using rule 43 (EXPRESION_OPT -> empty .)
-    RPAREN          reduce using rule 43 (EXPRESION_OPT -> empty .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    FACTOR                         shift and go to state 114
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
 
 state 84
 
-    (44) EXP -> TERMINO EXP_OPT .
+    (50) TERMINO -> TERMINO OP_DIV . FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
 
-    LESS            reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    GREATER         reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    NOT_EQUAL       reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    EQUALS          reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    LESS_EQUAL      reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    GREATER_EQUAL   reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    SEMICOL         reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    COMMA           reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
-    RPAREN          reduce using rule 44 (EXP -> TERMINO EXP_OPT .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    FACTOR                         shift and go to state 115
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
 
 state 85
 
-    (45) EXP_OPT -> OP_SUM . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
+    (51) FACTOR -> LPAREN EXPRESION . RPAREN
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+    RPAREN          shift and go to state 116
 
-    TERMINO                        shift and go to state 117
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
 
 state 86
-
-    (46) EXP_OPT -> OP_SUB . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    TERMINO                        shift and go to state 118
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 87
-
-    (47) EXP_OPT -> empty .
-
-    LESS            reduce using rule 47 (EXP_OPT -> empty .)
-    GREATER         reduce using rule 47 (EXP_OPT -> empty .)
-    NOT_EQUAL       reduce using rule 47 (EXP_OPT -> empty .)
-    EQUALS          reduce using rule 47 (EXP_OPT -> empty .)
-    LESS_EQUAL      reduce using rule 47 (EXP_OPT -> empty .)
-    GREATER_EQUAL   reduce using rule 47 (EXP_OPT -> empty .)
-    SEMICOL         reduce using rule 47 (EXP_OPT -> empty .)
-    COMMA           reduce using rule 47 (EXP_OPT -> empty .)
-    RPAREN          reduce using rule 47 (EXP_OPT -> empty .)
-
-
-state 88
-
-    (48) TERMINO -> FACTOR TERMINO_OPT .
-
-    OP_SUM          reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    OP_SUB          reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    LESS            reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    GREATER         reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    NOT_EQUAL       reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    EQUALS          reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    LESS_EQUAL      reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    GREATER_EQUAL   reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    SEMICOL         reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    COMMA           reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-    RPAREN          reduce using rule 48 (TERMINO -> FACTOR TERMINO_OPT .)
-
-
-state 89
-
-    (49) TERMINO_OPT -> OP_MULT . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    FACTOR                         shift and go to state 119
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 90
-
-    (50) TERMINO_OPT -> OP_DIV . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    FACTOR                         shift and go to state 120
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 91
-
-    (51) TERMINO_OPT -> empty .
-
-    OP_SUM          reduce using rule 51 (TERMINO_OPT -> empty .)
-    OP_SUB          reduce using rule 51 (TERMINO_OPT -> empty .)
-    LESS            reduce using rule 51 (TERMINO_OPT -> empty .)
-    GREATER         reduce using rule 51 (TERMINO_OPT -> empty .)
-    NOT_EQUAL       reduce using rule 51 (TERMINO_OPT -> empty .)
-    EQUALS          reduce using rule 51 (TERMINO_OPT -> empty .)
-    LESS_EQUAL      reduce using rule 51 (TERMINO_OPT -> empty .)
-    GREATER_EQUAL   reduce using rule 51 (TERMINO_OPT -> empty .)
-    SEMICOL         reduce using rule 51 (TERMINO_OPT -> empty .)
-    COMMA           reduce using rule 51 (TERMINO_OPT -> empty .)
-    RPAREN          reduce using rule 51 (TERMINO_OPT -> empty .)
-
-
-state 92
-
-    (52) FACTOR -> LPAREN EXPRESION . RPAREN
-
-    RPAREN          shift and go to state 121
-
-
-state 93
 
     (53) FACTOR -> SIGN IDENTIFIER .
 
     OP_MULT         reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     OP_DIV          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
-    OP_SUM          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
-    OP_SUB          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     LESS            reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     GREATER         reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     NOT_EQUAL       reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     EQUALS          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     LESS_EQUAL      reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     GREATER_EQUAL   reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
+    OP_SUM          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
+    OP_SUB          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     SEMICOL         reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     COMMA           reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
     RPAREN          reduce using rule 53 (FACTOR -> SIGN IDENTIFIER .)
 
 
-state 94
+state 87
 
     (54) FACTOR -> SIGN CTE .
 
     OP_MULT         reduce using rule 54 (FACTOR -> SIGN CTE .)
     OP_DIV          reduce using rule 54 (FACTOR -> SIGN CTE .)
-    OP_SUM          reduce using rule 54 (FACTOR -> SIGN CTE .)
-    OP_SUB          reduce using rule 54 (FACTOR -> SIGN CTE .)
     LESS            reduce using rule 54 (FACTOR -> SIGN CTE .)
     GREATER         reduce using rule 54 (FACTOR -> SIGN CTE .)
     NOT_EQUAL       reduce using rule 54 (FACTOR -> SIGN CTE .)
     EQUALS          reduce using rule 54 (FACTOR -> SIGN CTE .)
     LESS_EQUAL      reduce using rule 54 (FACTOR -> SIGN CTE .)
     GREATER_EQUAL   reduce using rule 54 (FACTOR -> SIGN CTE .)
+    OP_SUM          reduce using rule 54 (FACTOR -> SIGN CTE .)
+    OP_SUB          reduce using rule 54 (FACTOR -> SIGN CTE .)
     SEMICOL         reduce using rule 54 (FACTOR -> SIGN CTE .)
     COMMA           reduce using rule 54 (FACTOR -> SIGN CTE .)
     RPAREN          reduce using rule 54 (FACTOR -> SIGN CTE .)
 
 
-state 95
+state 88
 
-    (63) CTE -> CONST_INT .
+    (63) CTE -> CTE_INT .
 
-    OP_MULT         reduce using rule 63 (CTE -> CONST_INT .)
-    OP_DIV          reduce using rule 63 (CTE -> CONST_INT .)
-    OP_SUM          reduce using rule 63 (CTE -> CONST_INT .)
-    OP_SUB          reduce using rule 63 (CTE -> CONST_INT .)
-    LESS            reduce using rule 63 (CTE -> CONST_INT .)
-    GREATER         reduce using rule 63 (CTE -> CONST_INT .)
-    NOT_EQUAL       reduce using rule 63 (CTE -> CONST_INT .)
-    EQUALS          reduce using rule 63 (CTE -> CONST_INT .)
-    LESS_EQUAL      reduce using rule 63 (CTE -> CONST_INT .)
-    GREATER_EQUAL   reduce using rule 63 (CTE -> CONST_INT .)
-    SEMICOL         reduce using rule 63 (CTE -> CONST_INT .)
-    COMMA           reduce using rule 63 (CTE -> CONST_INT .)
-    RPAREN          reduce using rule 63 (CTE -> CONST_INT .)
-
-
-state 96
-
-    (64) CTE -> CONST_FLOAT .
-
-    OP_MULT         reduce using rule 64 (CTE -> CONST_FLOAT .)
-    OP_DIV          reduce using rule 64 (CTE -> CONST_FLOAT .)
-    OP_SUM          reduce using rule 64 (CTE -> CONST_FLOAT .)
-    OP_SUB          reduce using rule 64 (CTE -> CONST_FLOAT .)
-    LESS            reduce using rule 64 (CTE -> CONST_FLOAT .)
-    GREATER         reduce using rule 64 (CTE -> CONST_FLOAT .)
-    NOT_EQUAL       reduce using rule 64 (CTE -> CONST_FLOAT .)
-    EQUALS          reduce using rule 64 (CTE -> CONST_FLOAT .)
-    LESS_EQUAL      reduce using rule 64 (CTE -> CONST_FLOAT .)
-    GREATER_EQUAL   reduce using rule 64 (CTE -> CONST_FLOAT .)
-    SEMICOL         reduce using rule 64 (CTE -> CONST_FLOAT .)
-    COMMA           reduce using rule 64 (CTE -> CONST_FLOAT .)
-    RPAREN          reduce using rule 64 (CTE -> CONST_FLOAT .)
+    OP_MULT         reduce using rule 63 (CTE -> CTE_INT .)
+    OP_DIV          reduce using rule 63 (CTE -> CTE_INT .)
+    LESS            reduce using rule 63 (CTE -> CTE_INT .)
+    GREATER         reduce using rule 63 (CTE -> CTE_INT .)
+    NOT_EQUAL       reduce using rule 63 (CTE -> CTE_INT .)
+    EQUALS          reduce using rule 63 (CTE -> CTE_INT .)
+    LESS_EQUAL      reduce using rule 63 (CTE -> CTE_INT .)
+    GREATER_EQUAL   reduce using rule 63 (CTE -> CTE_INT .)
+    OP_SUM          reduce using rule 63 (CTE -> CTE_INT .)
+    OP_SUB          reduce using rule 63 (CTE -> CTE_INT .)
+    SEMICOL         reduce using rule 63 (CTE -> CTE_INT .)
+    COMMA           reduce using rule 63 (CTE -> CTE_INT .)
+    RPAREN          reduce using rule 63 (CTE -> CTE_INT .)
 
 
-state 97
+state 89
+
+    (64) CTE -> CTE_FLOAT .
+
+    OP_MULT         reduce using rule 64 (CTE -> CTE_FLOAT .)
+    OP_DIV          reduce using rule 64 (CTE -> CTE_FLOAT .)
+    LESS            reduce using rule 64 (CTE -> CTE_FLOAT .)
+    GREATER         reduce using rule 64 (CTE -> CTE_FLOAT .)
+    NOT_EQUAL       reduce using rule 64 (CTE -> CTE_FLOAT .)
+    EQUALS          reduce using rule 64 (CTE -> CTE_FLOAT .)
+    LESS_EQUAL      reduce using rule 64 (CTE -> CTE_FLOAT .)
+    GREATER_EQUAL   reduce using rule 64 (CTE -> CTE_FLOAT .)
+    OP_SUM          reduce using rule 64 (CTE -> CTE_FLOAT .)
+    OP_SUB          reduce using rule 64 (CTE -> CTE_FLOAT .)
+    SEMICOL         reduce using rule 64 (CTE -> CTE_FLOAT .)
+    COMMA           reduce using rule 64 (CTE -> CTE_FLOAT .)
+    RPAREN          reduce using rule 64 (CTE -> CTE_FLOAT .)
+
+
+state 90
+
+    (65) CTE_INT -> CONST_INT .
+
+    OP_MULT         reduce using rule 65 (CTE_INT -> CONST_INT .)
+    OP_DIV          reduce using rule 65 (CTE_INT -> CONST_INT .)
+    LESS            reduce using rule 65 (CTE_INT -> CONST_INT .)
+    GREATER         reduce using rule 65 (CTE_INT -> CONST_INT .)
+    NOT_EQUAL       reduce using rule 65 (CTE_INT -> CONST_INT .)
+    EQUALS          reduce using rule 65 (CTE_INT -> CONST_INT .)
+    LESS_EQUAL      reduce using rule 65 (CTE_INT -> CONST_INT .)
+    GREATER_EQUAL   reduce using rule 65 (CTE_INT -> CONST_INT .)
+    OP_SUM          reduce using rule 65 (CTE_INT -> CONST_INT .)
+    OP_SUB          reduce using rule 65 (CTE_INT -> CONST_INT .)
+    SEMICOL         reduce using rule 65 (CTE_INT -> CONST_INT .)
+    COMMA           reduce using rule 65 (CTE_INT -> CONST_INT .)
+    RPAREN          reduce using rule 65 (CTE_INT -> CONST_INT .)
+
+
+state 91
+
+    (66) CTE_FLOAT -> CONST_FLOAT .
+
+    OP_MULT         reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    OP_DIV          reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    LESS            reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    GREATER         reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    NOT_EQUAL       reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    EQUALS          reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    LESS_EQUAL      reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    GREATER_EQUAL   reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    OP_SUM          reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    OP_SUB          reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    SEMICOL         reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    COMMA           reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+    RPAREN          reduce using rule 66 (CTE_FLOAT -> CONST_FLOAT .)
+
+
+state 92
 
     (58) F_CALL -> IDENTIFIER LPAREN OPT_EXPRESION RPAREN . SEMICOL
 
-    SEMICOL         shift and go to state 122
+    SEMICOL         shift and go to state 117
 
 
-state 98
+state 93
 
     (59) OPT_EXPRESION -> EXPRESION MORE_EXPRESION .
 
     RPAREN          reduce using rule 59 (OPT_EXPRESION -> EXPRESION MORE_EXPRESION .)
 
 
-state 99
+state 94
 
     (61) MORE_EXPRESION -> COMMA . EXPRESION MORE_EXPRESION
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
     (53) FACTOR -> . SIGN IDENTIFIER
     (54) FACTOR -> . SIGN CTE
     (55) SIGN -> . OP_SUM
     (56) SIGN -> . OP_SUB
     (57) SIGN -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
 
-    EXPRESION                      shift and go to state 123
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXPRESION                      shift and go to state 118
     EXP                            shift and go to state 57
     TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
     empty                          shift and go to state 64
 
-state 100
+state 95
 
     (62) MORE_EXPRESION -> empty .
 
     RPAREN          reduce using rule 62 (MORE_EXPRESION -> empty .)
 
 
+state 96
+
+    (25) CONDITION -> IF LPAREN EXPRESION RPAREN . CUADRUPLO_IF Body ELSE_ARG SEMICOL
+    (26) CUADRUPLO_IF -> .
+
+    LBRACKET        reduce using rule 26 (CUADRUPLO_IF -> .)
+
+    CUADRUPLO_IF                   shift and go to state 119
+
+state 97
+
+    (30) CYCLE -> DO Body WHILE LPAREN . EXPRESION RPAREN SEMICOL
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
+
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXPRESION                      shift and go to state 120
+    EXP                            shift and go to state 57
+    TERMINO                        shift and go to state 58
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
+
+state 98
+
+    (31) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS . RPAREN SEMICOL
+
+    RPAREN          shift and go to state 121
+
+
+state 99
+
+    (33) MORE_PRINT_ARGS -> COMMA . CONST_STRING MORE_PRINT_ARGS
+    (34) MORE_PRINT_ARGS -> COMMA . EXPRESION MORE_PRINT_ARGS
+    (38) EXPRESION -> . EXP
+    (39) EXPRESION -> . EXP LESS EXP
+    (40) EXPRESION -> . EXP GREATER EXP
+    (41) EXPRESION -> . EXP NOT_EQUAL EXP
+    (42) EXPRESION -> . EXP EQUALS EXP
+    (43) EXPRESION -> . EXP LESS_EQUAL EXP
+    (44) EXPRESION -> . EXP GREATER_EQUAL EXP
+    (45) EXP -> . TERMINO
+    (46) EXP -> . EXP OP_SUM TERMINO
+    (47) EXP -> . EXP OP_SUB TERMINO
+    (48) TERMINO -> . FACTOR
+    (49) TERMINO -> . TERMINO OP_MULT FACTOR
+    (50) TERMINO -> . TERMINO OP_DIV FACTOR
+    (51) FACTOR -> . LPAREN EXPRESION RPAREN
+    (52) FACTOR -> . IDENTIFIER
+    (53) FACTOR -> . SIGN IDENTIFIER
+    (54) FACTOR -> . SIGN CTE
+    (55) SIGN -> . OP_SUM
+    (56) SIGN -> . OP_SUB
+    (57) SIGN -> . empty
+    (67) empty -> .
+
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    CONST_STRING    shift and go to state 122
+    LPAREN          shift and go to state 62
+    IDENTIFIER      shift and go to state 55
+    OP_SUM          shift and go to state 59
+    OP_SUB          shift and go to state 60
+    CONST_INT       reduce using rule 67 (empty -> .)
+    CONST_FLOAT     reduce using rule 67 (empty -> .)
+
+  ! IDENTIFIER      [ reduce using rule 67 (empty -> .) ]
+
+    EXPRESION                      shift and go to state 123
+    EXP                            shift and go to state 57
+    TERMINO                        shift and go to state 58
+    FACTOR                         shift and go to state 61
+    SIGN                           shift and go to state 63
+    empty                          shift and go to state 64
+
+state 100
+
+    (35) MORE_PRINT_ARGS -> empty .
+
+    RPAREN          reduce using rule 35 (MORE_PRINT_ARGS -> empty .)
+
+
 state 101
 
-    (25) CONDITION -> IF LPAREN EXPRESION RPAREN . Body ELSE_ARG SEMICOL
-    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
+    (32) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS . RPAREN SEMICOL
 
-    LBRACKET        shift and go to state 22
+    RPAREN          shift and go to state 124
 
-    Body                           shift and go to state 124
 
 state 102
-
-    (28) CYCLE -> DO Body WHILE LPAREN . EXPRESION RPAREN SEMICOL
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    EXPRESION                      shift and go to state 125
-    EXP                            shift and go to state 57
-    TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 103
-
-    (29) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS . RPAREN SEMICOL
-
-    RPAREN          shift and go to state 126
-
-
-state 104
-
-    (31) MORE_PRINT_ARGS -> COMMA . CONST_STRING MORE_PRINT_ARGS
-    (32) MORE_PRINT_ARGS -> COMMA . EXPRESION MORE_PRINT_ARGS
-    (36) EXPRESION -> . EXP EXPRESION_OPT
-    (44) EXP -> . TERMINO EXP_OPT
-    (48) TERMINO -> . FACTOR TERMINO_OPT
-    (52) FACTOR -> . LPAREN EXPRESION RPAREN
-    (53) FACTOR -> . SIGN IDENTIFIER
-    (54) FACTOR -> . SIGN CTE
-    (55) SIGN -> . OP_SUM
-    (56) SIGN -> . OP_SUB
-    (57) SIGN -> . empty
-    (65) empty -> .
-
-    CONST_STRING    shift and go to state 127
-    LPAREN          shift and go to state 60
-    OP_SUM          shift and go to state 62
-    OP_SUB          shift and go to state 63
-    IDENTIFIER      reduce using rule 65 (empty -> .)
-    CONST_INT       reduce using rule 65 (empty -> .)
-    CONST_FLOAT     reduce using rule 65 (empty -> .)
-
-    EXPRESION                      shift and go to state 128
-    EXP                            shift and go to state 57
-    TERMINO                        shift and go to state 58
-    FACTOR                         shift and go to state 59
-    SIGN                           shift and go to state 61
-    empty                          shift and go to state 64
-
-state 105
-
-    (33) MORE_PRINT_ARGS -> empty .
-
-    RPAREN          reduce using rule 33 (MORE_PRINT_ARGS -> empty .)
-
-
-state 106
-
-    (30) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS . RPAREN SEMICOL
-
-    RPAREN          shift and go to state 129
-
-
-state 107
 
     (14) ARGS -> IDENTIFIER COLON TYPE MORE_ARGS .
 
     RPAREN          reduce using rule 14 (ARGS -> IDENTIFIER COLON TYPE MORE_ARGS .)
 
 
-state 108
+state 103
 
     (12) MORE_ARGS -> COMMA . IDENTIFIER COLON TYPE MORE_ARGS
 
-    IDENTIFIER      shift and go to state 130
+    IDENTIFIER      shift and go to state 125
 
 
-state 109
+state 104
 
     (13) MORE_ARGS -> empty .
 
     RPAREN          reduce using rule 13 (MORE_ARGS -> empty .)
 
 
-state 110
+state 105
 
     (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT . Body RSQBRACKET SEMICOL
     (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
 
     LBRACKET        shift and go to state 22
 
-    Body                           shift and go to state 131
+    Body                           shift and go to state 126
+
+state 106
+
+    (39) EXPRESION -> EXP LESS EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
+
+    SEMICOL         reduce using rule 39 (EXPRESION -> EXP LESS EXP .)
+    COMMA           reduce using rule 39 (EXPRESION -> EXP LESS EXP .)
+    RPAREN          reduce using rule 39 (EXPRESION -> EXP LESS EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
+
+
+state 107
+
+    (40) EXPRESION -> EXP GREATER EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
+
+    SEMICOL         reduce using rule 40 (EXPRESION -> EXP GREATER EXP .)
+    COMMA           reduce using rule 40 (EXPRESION -> EXP GREATER EXP .)
+    RPAREN          reduce using rule 40 (EXPRESION -> EXP GREATER EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
+
+
+state 108
+
+    (41) EXPRESION -> EXP NOT_EQUAL EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
+
+    SEMICOL         reduce using rule 41 (EXPRESION -> EXP NOT_EQUAL EXP .)
+    COMMA           reduce using rule 41 (EXPRESION -> EXP NOT_EQUAL EXP .)
+    RPAREN          reduce using rule 41 (EXPRESION -> EXP NOT_EQUAL EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
+
+
+state 109
+
+    (42) EXPRESION -> EXP EQUALS EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
+
+    SEMICOL         reduce using rule 42 (EXPRESION -> EXP EQUALS EXP .)
+    COMMA           reduce using rule 42 (EXPRESION -> EXP EQUALS EXP .)
+    RPAREN          reduce using rule 42 (EXPRESION -> EXP EQUALS EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
+
+
+state 110
+
+    (43) EXPRESION -> EXP LESS_EQUAL EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
+
+    SEMICOL         reduce using rule 43 (EXPRESION -> EXP LESS_EQUAL EXP .)
+    COMMA           reduce using rule 43 (EXPRESION -> EXP LESS_EQUAL EXP .)
+    RPAREN          reduce using rule 43 (EXPRESION -> EXP LESS_EQUAL EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
+
 
 state 111
 
-    (37) EXPRESION_OPT -> LESS EXP .
+    (44) EXPRESION -> EXP GREATER_EQUAL EXP .
+    (46) EXP -> EXP . OP_SUM TERMINO
+    (47) EXP -> EXP . OP_SUB TERMINO
 
-    SEMICOL         reduce using rule 37 (EXPRESION_OPT -> LESS EXP .)
-    COMMA           reduce using rule 37 (EXPRESION_OPT -> LESS EXP .)
-    RPAREN          reduce using rule 37 (EXPRESION_OPT -> LESS EXP .)
+    SEMICOL         reduce using rule 44 (EXPRESION -> EXP GREATER_EQUAL EXP .)
+    COMMA           reduce using rule 44 (EXPRESION -> EXP GREATER_EQUAL EXP .)
+    RPAREN          reduce using rule 44 (EXPRESION -> EXP GREATER_EQUAL EXP .)
+    OP_SUM          shift and go to state 81
+    OP_SUB          shift and go to state 82
 
 
 state 112
 
-    (38) EXPRESION_OPT -> GREATER EXP .
+    (46) EXP -> EXP OP_SUM TERMINO .
+    (49) TERMINO -> TERMINO . OP_MULT FACTOR
+    (50) TERMINO -> TERMINO . OP_DIV FACTOR
 
-    SEMICOL         reduce using rule 38 (EXPRESION_OPT -> GREATER EXP .)
-    COMMA           reduce using rule 38 (EXPRESION_OPT -> GREATER EXP .)
-    RPAREN          reduce using rule 38 (EXPRESION_OPT -> GREATER EXP .)
+    LESS            reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    GREATER         reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    NOT_EQUAL       reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    EQUALS          reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    LESS_EQUAL      reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    GREATER_EQUAL   reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    OP_SUM          reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    OP_SUB          reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    SEMICOL         reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    COMMA           reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    RPAREN          reduce using rule 46 (EXP -> EXP OP_SUM TERMINO .)
+    OP_MULT         shift and go to state 83
+    OP_DIV          shift and go to state 84
 
 
 state 113
 
-    (39) EXPRESION_OPT -> NOT_EQUAL EXP .
+    (47) EXP -> EXP OP_SUB TERMINO .
+    (49) TERMINO -> TERMINO . OP_MULT FACTOR
+    (50) TERMINO -> TERMINO . OP_DIV FACTOR
 
-    SEMICOL         reduce using rule 39 (EXPRESION_OPT -> NOT_EQUAL EXP .)
-    COMMA           reduce using rule 39 (EXPRESION_OPT -> NOT_EQUAL EXP .)
-    RPAREN          reduce using rule 39 (EXPRESION_OPT -> NOT_EQUAL EXP .)
+    LESS            reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    GREATER         reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    NOT_EQUAL       reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    EQUALS          reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    LESS_EQUAL      reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    GREATER_EQUAL   reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    OP_SUM          reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    OP_SUB          reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    SEMICOL         reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    COMMA           reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    RPAREN          reduce using rule 47 (EXP -> EXP OP_SUB TERMINO .)
+    OP_MULT         shift and go to state 83
+    OP_DIV          shift and go to state 84
 
 
 state 114
 
-    (40) EXPRESION_OPT -> EQUALS EXP .
+    (49) TERMINO -> TERMINO OP_MULT FACTOR .
 
-    SEMICOL         reduce using rule 40 (EXPRESION_OPT -> EQUALS EXP .)
-    COMMA           reduce using rule 40 (EXPRESION_OPT -> EQUALS EXP .)
-    RPAREN          reduce using rule 40 (EXPRESION_OPT -> EQUALS EXP .)
+    OP_MULT         reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    OP_DIV          reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    LESS            reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    GREATER         reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    NOT_EQUAL       reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    EQUALS          reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    LESS_EQUAL      reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    GREATER_EQUAL   reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    OP_SUM          reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    OP_SUB          reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    SEMICOL         reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    COMMA           reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
+    RPAREN          reduce using rule 49 (TERMINO -> TERMINO OP_MULT FACTOR .)
 
 
 state 115
 
-    (41) EXPRESION_OPT -> LESS_EQUAL EXP .
+    (50) TERMINO -> TERMINO OP_DIV FACTOR .
 
-    SEMICOL         reduce using rule 41 (EXPRESION_OPT -> LESS_EQUAL EXP .)
-    COMMA           reduce using rule 41 (EXPRESION_OPT -> LESS_EQUAL EXP .)
-    RPAREN          reduce using rule 41 (EXPRESION_OPT -> LESS_EQUAL EXP .)
+    OP_MULT         reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    OP_DIV          reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    LESS            reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    GREATER         reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    NOT_EQUAL       reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    EQUALS          reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    LESS_EQUAL      reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    GREATER_EQUAL   reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    OP_SUM          reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    OP_SUB          reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    SEMICOL         reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    COMMA           reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
+    RPAREN          reduce using rule 50 (TERMINO -> TERMINO OP_DIV FACTOR .)
 
 
 state 116
 
-    (42) EXPRESION_OPT -> GREATER_EQUAL EXP .
+    (51) FACTOR -> LPAREN EXPRESION RPAREN .
 
-    SEMICOL         reduce using rule 42 (EXPRESION_OPT -> GREATER_EQUAL EXP .)
-    COMMA           reduce using rule 42 (EXPRESION_OPT -> GREATER_EQUAL EXP .)
-    RPAREN          reduce using rule 42 (EXPRESION_OPT -> GREATER_EQUAL EXP .)
+    OP_MULT         reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    OP_DIV          reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    LESS            reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    GREATER         reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    NOT_EQUAL       reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    EQUALS          reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    LESS_EQUAL      reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    GREATER_EQUAL   reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    OP_SUM          reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    OP_SUB          reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    SEMICOL         reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    COMMA           reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
+    RPAREN          reduce using rule 51 (FACTOR -> LPAREN EXPRESION RPAREN .)
 
 
 state 117
-
-    (45) EXP_OPT -> OP_SUM TERMINO . EXP_OPT
-    (45) EXP_OPT -> . OP_SUM TERMINO EXP_OPT
-    (46) EXP_OPT -> . OP_SUB TERMINO EXP_OPT
-    (47) EXP_OPT -> . empty
-    (65) empty -> .
-
-    OP_SUM          shift and go to state 85
-    OP_SUB          shift and go to state 86
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    EXP_OPT                        shift and go to state 132
-    empty                          shift and go to state 87
-
-state 118
-
-    (46) EXP_OPT -> OP_SUB TERMINO . EXP_OPT
-    (45) EXP_OPT -> . OP_SUM TERMINO EXP_OPT
-    (46) EXP_OPT -> . OP_SUB TERMINO EXP_OPT
-    (47) EXP_OPT -> . empty
-    (65) empty -> .
-
-    OP_SUM          shift and go to state 85
-    OP_SUB          shift and go to state 86
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    EXP_OPT                        shift and go to state 133
-    empty                          shift and go to state 87
-
-state 119
-
-    (49) TERMINO_OPT -> OP_MULT FACTOR . TERMINO_OPT
-    (49) TERMINO_OPT -> . OP_MULT FACTOR TERMINO_OPT
-    (50) TERMINO_OPT -> . OP_DIV FACTOR TERMINO_OPT
-    (51) TERMINO_OPT -> . empty
-    (65) empty -> .
-
-    OP_MULT         shift and go to state 89
-    OP_DIV          shift and go to state 90
-    OP_SUM          reduce using rule 65 (empty -> .)
-    OP_SUB          reduce using rule 65 (empty -> .)
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    TERMINO_OPT                    shift and go to state 134
-    empty                          shift and go to state 91
-
-state 120
-
-    (50) TERMINO_OPT -> OP_DIV FACTOR . TERMINO_OPT
-    (49) TERMINO_OPT -> . OP_MULT FACTOR TERMINO_OPT
-    (50) TERMINO_OPT -> . OP_DIV FACTOR TERMINO_OPT
-    (51) TERMINO_OPT -> . empty
-    (65) empty -> .
-
-    OP_MULT         shift and go to state 89
-    OP_DIV          shift and go to state 90
-    OP_SUM          reduce using rule 65 (empty -> .)
-    OP_SUB          reduce using rule 65 (empty -> .)
-    LESS            reduce using rule 65 (empty -> .)
-    GREATER         reduce using rule 65 (empty -> .)
-    NOT_EQUAL       reduce using rule 65 (empty -> .)
-    EQUALS          reduce using rule 65 (empty -> .)
-    LESS_EQUAL      reduce using rule 65 (empty -> .)
-    GREATER_EQUAL   reduce using rule 65 (empty -> .)
-    SEMICOL         reduce using rule 65 (empty -> .)
-    COMMA           reduce using rule 65 (empty -> .)
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    TERMINO_OPT                    shift and go to state 135
-    empty                          shift and go to state 91
-
-state 121
-
-    (52) FACTOR -> LPAREN EXPRESION RPAREN .
-
-    OP_MULT         reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    OP_DIV          reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    OP_SUM          reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    OP_SUB          reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    LESS            reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    GREATER         reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    NOT_EQUAL       reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    EQUALS          reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    LESS_EQUAL      reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    GREATER_EQUAL   reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    SEMICOL         reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    COMMA           reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-    RPAREN          reduce using rule 52 (FACTOR -> LPAREN EXPRESION RPAREN .)
-
-
-state 122
 
     (58) F_CALL -> IDENTIFIER LPAREN OPT_EXPRESION RPAREN SEMICOL .
 
@@ -1823,293 +1968,222 @@ state 122
     RBRACKET        reduce using rule 58 (F_CALL -> IDENTIFIER LPAREN OPT_EXPRESION RPAREN SEMICOL .)
 
 
-state 123
+state 118
 
     (61) MORE_EXPRESION -> COMMA EXPRESION . MORE_EXPRESION
     (61) MORE_EXPRESION -> . COMMA EXPRESION MORE_EXPRESION
     (62) MORE_EXPRESION -> . empty
-    (65) empty -> .
+    (67) empty -> .
+
+    COMMA           shift and go to state 94
+    RPAREN          reduce using rule 67 (empty -> .)
+
+    MORE_EXPRESION                 shift and go to state 127
+    empty                          shift and go to state 95
+
+state 119
+
+    (25) CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF . Body ELSE_ARG SEMICOL
+    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
+
+    LBRACKET        shift and go to state 22
+
+    Body                           shift and go to state 128
+
+state 120
+
+    (30) CYCLE -> DO Body WHILE LPAREN EXPRESION . RPAREN SEMICOL
+
+    RPAREN          shift and go to state 129
+
+
+state 121
+
+    (31) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN . SEMICOL
+
+    SEMICOL         shift and go to state 130
+
+
+state 122
+
+    (33) MORE_PRINT_ARGS -> COMMA CONST_STRING . MORE_PRINT_ARGS
+    (33) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
+    (34) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
+    (35) MORE_PRINT_ARGS -> . empty
+    (67) empty -> .
 
     COMMA           shift and go to state 99
-    RPAREN          reduce using rule 65 (empty -> .)
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_EXPRESION                 shift and go to state 136
+    MORE_PRINT_ARGS                shift and go to state 131
+    empty                          shift and go to state 100
+
+state 123
+
+    (34) MORE_PRINT_ARGS -> COMMA EXPRESION . MORE_PRINT_ARGS
+    (33) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
+    (34) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
+    (35) MORE_PRINT_ARGS -> . empty
+    (67) empty -> .
+
+    COMMA           shift and go to state 99
+    RPAREN          reduce using rule 67 (empty -> .)
+
+    MORE_PRINT_ARGS                shift and go to state 132
     empty                          shift and go to state 100
 
 state 124
 
-    (25) CONDITION -> IF LPAREN EXPRESION RPAREN Body . ELSE_ARG SEMICOL
-    (26) ELSE_ARG -> . ELSE Body
-    (27) ELSE_ARG -> . empty
-    (65) empty -> .
+    (32) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN . SEMICOL
 
-    ELSE            shift and go to state 138
-    SEMICOL         reduce using rule 65 (empty -> .)
+    SEMICOL         shift and go to state 133
 
-    ELSE_ARG                       shift and go to state 137
-    empty                          shift and go to state 139
 
 state 125
 
-    (28) CYCLE -> DO Body WHILE LPAREN EXPRESION . RPAREN SEMICOL
+    (12) MORE_ARGS -> COMMA IDENTIFIER . COLON TYPE MORE_ARGS
 
-    RPAREN          shift and go to state 140
+    COLON           shift and go to state 134
 
 
 state 126
 
-    (29) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN . SEMICOL
+    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body . RSQBRACKET SEMICOL
 
-    SEMICOL         shift and go to state 141
+    RSQBRACKET      shift and go to state 135
 
 
 state 127
-
-    (31) MORE_PRINT_ARGS -> COMMA CONST_STRING . MORE_PRINT_ARGS
-    (31) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
-    (32) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
-    (33) MORE_PRINT_ARGS -> . empty
-    (65) empty -> .
-
-    COMMA           shift and go to state 104
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    MORE_PRINT_ARGS                shift and go to state 142
-    empty                          shift and go to state 105
-
-state 128
-
-    (32) MORE_PRINT_ARGS -> COMMA EXPRESION . MORE_PRINT_ARGS
-    (31) MORE_PRINT_ARGS -> . COMMA CONST_STRING MORE_PRINT_ARGS
-    (32) MORE_PRINT_ARGS -> . COMMA EXPRESION MORE_PRINT_ARGS
-    (33) MORE_PRINT_ARGS -> . empty
-    (65) empty -> .
-
-    COMMA           shift and go to state 104
-    RPAREN          reduce using rule 65 (empty -> .)
-
-    MORE_PRINT_ARGS                shift and go to state 143
-    empty                          shift and go to state 105
-
-state 129
-
-    (30) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN . SEMICOL
-
-    SEMICOL         shift and go to state 144
-
-
-state 130
-
-    (12) MORE_ARGS -> COMMA IDENTIFIER . COLON TYPE MORE_ARGS
-
-    COLON           shift and go to state 145
-
-
-state 131
-
-    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body . RSQBRACKET SEMICOL
-
-    RSQBRACKET      shift and go to state 146
-
-
-state 132
-
-    (45) EXP_OPT -> OP_SUM TERMINO EXP_OPT .
-
-    LESS            reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    GREATER         reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    NOT_EQUAL       reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    EQUALS          reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    LESS_EQUAL      reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    GREATER_EQUAL   reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    SEMICOL         reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    COMMA           reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-    RPAREN          reduce using rule 45 (EXP_OPT -> OP_SUM TERMINO EXP_OPT .)
-
-
-state 133
-
-    (46) EXP_OPT -> OP_SUB TERMINO EXP_OPT .
-
-    LESS            reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    GREATER         reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    NOT_EQUAL       reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    EQUALS          reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    LESS_EQUAL      reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    GREATER_EQUAL   reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    SEMICOL         reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    COMMA           reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-    RPAREN          reduce using rule 46 (EXP_OPT -> OP_SUB TERMINO EXP_OPT .)
-
-
-state 134
-
-    (49) TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .
-
-    OP_SUM          reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    OP_SUB          reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    LESS            reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    GREATER         reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    NOT_EQUAL       reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    EQUALS          reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    LESS_EQUAL      reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    GREATER_EQUAL   reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    SEMICOL         reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    COMMA           reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-    RPAREN          reduce using rule 49 (TERMINO_OPT -> OP_MULT FACTOR TERMINO_OPT .)
-
-
-state 135
-
-    (50) TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .
-
-    OP_SUM          reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    OP_SUB          reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    LESS            reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    GREATER         reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    NOT_EQUAL       reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    EQUALS          reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    LESS_EQUAL      reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    GREATER_EQUAL   reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    SEMICOL         reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    COMMA           reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-    RPAREN          reduce using rule 50 (TERMINO_OPT -> OP_DIV FACTOR TERMINO_OPT .)
-
-
-state 136
 
     (61) MORE_EXPRESION -> COMMA EXPRESION MORE_EXPRESION .
 
     RPAREN          reduce using rule 61 (MORE_EXPRESION -> COMMA EXPRESION MORE_EXPRESION .)
 
 
+state 128
+
+    (25) CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body . ELSE_ARG SEMICOL
+    (27) ELSE_ARG -> . ELSE CUADRUPLO_ELSE Body
+    (29) ELSE_ARG -> . empty
+    (67) empty -> .
+
+    ELSE            shift and go to state 137
+    SEMICOL         reduce using rule 67 (empty -> .)
+
+    ELSE_ARG                       shift and go to state 136
+    empty                          shift and go to state 138
+
+state 129
+
+    (30) CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN . SEMICOL
+
+    SEMICOL         shift and go to state 139
+
+
+state 130
+
+    (31) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .
+
+    IDENTIFIER      reduce using rule 31 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
+    IF              reduce using rule 31 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
+    DO              reduce using rule 31 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
+    PRINT           reduce using rule 31 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
+    RBRACKET        reduce using rule 31 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
+
+
+state 131
+
+    (33) MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS .
+
+    RPAREN          reduce using rule 33 (MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS .)
+
+
+state 132
+
+    (34) MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS .
+
+    RPAREN          reduce using rule 34 (MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS .)
+
+
+state 133
+
+    (32) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .
+
+    IDENTIFIER      reduce using rule 32 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
+    IF              reduce using rule 32 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
+    DO              reduce using rule 32 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
+    PRINT           reduce using rule 32 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
+    RBRACKET        reduce using rule 32 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
+
+
+state 134
+
+    (12) MORE_ARGS -> COMMA IDENTIFIER COLON . TYPE MORE_ARGS
+    (36) TYPE -> . INT
+    (37) TYPE -> . FLOAT
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+
+    TYPE                           shift and go to state 140
+
+state 135
+
+    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET . SEMICOL
+
+    SEMICOL         shift and go to state 141
+
+
+state 136
+
+    (25) CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG . SEMICOL
+
+    SEMICOL         shift and go to state 142
+
+
 state 137
 
-    (25) CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG . SEMICOL
+    (27) ELSE_ARG -> ELSE . CUADRUPLO_ELSE Body
+    (28) CUADRUPLO_ELSE -> . empty
+    (67) empty -> .
 
-    SEMICOL         shift and go to state 147
+    LBRACKET        reduce using rule 67 (empty -> .)
 
+    CUADRUPLO_ELSE                 shift and go to state 143
+    empty                          shift and go to state 144
 
 state 138
 
-    (26) ELSE_ARG -> ELSE . Body
-    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
+    (29) ELSE_ARG -> empty .
 
-    LBRACKET        shift and go to state 22
+    SEMICOL         reduce using rule 29 (ELSE_ARG -> empty .)
 
-    Body                           shift and go to state 148
 
 state 139
 
-    (27) ELSE_ARG -> empty .
+    (30) CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .
 
-    SEMICOL         reduce using rule 27 (ELSE_ARG -> empty .)
+    IDENTIFIER      reduce using rule 30 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
+    IF              reduce using rule 30 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
+    DO              reduce using rule 30 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
+    PRINT           reduce using rule 30 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
+    RBRACKET        reduce using rule 30 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
 
 
 state 140
 
-    (28) CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN . SEMICOL
-
-    SEMICOL         shift and go to state 149
-
-
-state 141
-
-    (29) PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .
-
-    IDENTIFIER      reduce using rule 29 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
-    IF              reduce using rule 29 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
-    DO              reduce using rule 29 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
-    PRINT           reduce using rule 29 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
-    RBRACKET        reduce using rule 29 (PRINTP -> PRINT LPAREN CONST_STRING MORE_PRINT_ARGS RPAREN SEMICOL .)
-
-
-state 142
-
-    (31) MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS .
-
-    RPAREN          reduce using rule 31 (MORE_PRINT_ARGS -> COMMA CONST_STRING MORE_PRINT_ARGS .)
-
-
-state 143
-
-    (32) MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS .
-
-    RPAREN          reduce using rule 32 (MORE_PRINT_ARGS -> COMMA EXPRESION MORE_PRINT_ARGS .)
-
-
-state 144
-
-    (30) PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .
-
-    IDENTIFIER      reduce using rule 30 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
-    IF              reduce using rule 30 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
-    DO              reduce using rule 30 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
-    PRINT           reduce using rule 30 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
-    RBRACKET        reduce using rule 30 (PRINTP -> PRINT LPAREN EXPRESION MORE_PRINT_ARGS RPAREN SEMICOL .)
-
-
-state 145
-
-    (12) MORE_ARGS -> COMMA IDENTIFIER COLON . TYPE MORE_ARGS
-    (34) TYPE -> . INT
-    (35) TYPE -> . FLOAT
-
-    INT             shift and go to state 43
-    FLOAT           shift and go to state 44
-
-    TYPE                           shift and go to state 150
-
-state 146
-
-    (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET . SEMICOL
-
-    SEMICOL         shift and go to state 151
-
-
-state 147
-
-    (25) CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .
-
-    IDENTIFIER      reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .)
-    IF              reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .)
-    DO              reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .)
-    PRINT           reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .)
-    RBRACKET        reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN Body ELSE_ARG SEMICOL .)
-
-
-state 148
-
-    (26) ELSE_ARG -> ELSE Body .
-
-    SEMICOL         reduce using rule 26 (ELSE_ARG -> ELSE Body .)
-
-
-state 149
-
-    (28) CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .
-
-    IDENTIFIER      reduce using rule 28 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
-    IF              reduce using rule 28 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
-    DO              reduce using rule 28 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
-    PRINT           reduce using rule 28 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
-    RBRACKET        reduce using rule 28 (CYCLE -> DO Body WHILE LPAREN EXPRESION RPAREN SEMICOL .)
-
-
-state 150
-
     (12) MORE_ARGS -> COMMA IDENTIFIER COLON TYPE . MORE_ARGS
     (12) MORE_ARGS -> . COMMA IDENTIFIER COLON TYPE MORE_ARGS
     (13) MORE_ARGS -> . empty
-    (65) empty -> .
+    (67) empty -> .
 
-    COMMA           shift and go to state 108
-    RPAREN          reduce using rule 65 (empty -> .)
+    COMMA           shift and go to state 103
+    RPAREN          reduce using rule 67 (empty -> .)
 
-    MORE_ARGS                      shift and go to state 152
-    empty                          shift and go to state 109
+    MORE_ARGS                      shift and go to state 145
+    empty                          shift and go to state 104
 
-state 151
+state 141
 
     (11) FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL .
 
@@ -2117,9 +2191,64 @@ state 151
     MAIN            reduce using rule 11 (FUNCS -> VOID IDENTIFIER LPAREN ARGS RPAREN LSQBRACKET VARS_OPT Body RSQBRACKET SEMICOL .)
 
 
-state 152
+state 142
+
+    (25) CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .
+
+    IDENTIFIER      reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .)
+    IF              reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .)
+    DO              reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .)
+    PRINT           reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .)
+    RBRACKET        reduce using rule 25 (CONDITION -> IF LPAREN EXPRESION RPAREN CUADRUPLO_IF Body ELSE_ARG SEMICOL .)
+
+
+state 143
+
+    (27) ELSE_ARG -> ELSE CUADRUPLO_ELSE . Body
+    (16) Body -> . LBRACKET STATEMENT_OPT RBRACKET
+
+    LBRACKET        shift and go to state 22
+
+    Body                           shift and go to state 146
+
+state 144
+
+    (28) CUADRUPLO_ELSE -> empty .
+
+    LBRACKET        reduce using rule 28 (CUADRUPLO_ELSE -> empty .)
+
+
+state 145
 
     (12) MORE_ARGS -> COMMA IDENTIFIER COLON TYPE MORE_ARGS .
 
     RPAREN          reduce using rule 12 (MORE_ARGS -> COMMA IDENTIFIER COLON TYPE MORE_ARGS .)
 
+
+state 146
+
+    (27) ELSE_ARG -> ELSE CUADRUPLO_ELSE Body .
+
+    SEMICOL         reduce using rule 27 (ELSE_ARG -> ELSE CUADRUPLO_ELSE Body .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for IDENTIFIER in state 47 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 48 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 49 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 51 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 62 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 75 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 76 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 77 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 78 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 79 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 80 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 81 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 82 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 83 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 84 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 94 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 97 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 99 resolved as shift

@@ -222,6 +222,7 @@ def p_MORE_PRINT_ARGS(p):
 def p_TYPE(p):
     '''TYPE : INT
             | FLOAT'''
+    
     pass
 
 #EXPRESION ::= EXP EXPRESION_OPT
@@ -318,8 +319,6 @@ def p_error(p):
         tok = parser.token()             
         if not tok or tok.type == 'SEMICOL': break
     parser.errok()
-
-    
 
     # Return SEMI to the parser as the next lookahead token
     return tok 

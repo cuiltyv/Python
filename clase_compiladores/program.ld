@@ -1,20 +1,25 @@
-# programa para obtener el mayor entre 2 numeros
+program prog;
 
-program numero_mayor;
-
-var num1,num2 : int; # variables donde se guardan valores
+var A, B, C, D : int ;
 
 main {
-
-    num1 = 3
-    num2 = 10;
-
-    if (num1 > num2){
-        print("El mayor numero es num1")
+    A = 7;
+    B = 1;
+    C = 12;
+    D = 10;
+    if (A + B > D){
+        if (A < B){
+            A = 0;
+            B = B + D;
+        }else
+        {
+            C = A + B;
+        };
     }
-    else{
-        print("El mayor numero es num2");
-    }
-}
-end
-# final de programa
+    else
+    {
+        A = B + C;
+    };
+
+    D = B + A * C;
+} end
